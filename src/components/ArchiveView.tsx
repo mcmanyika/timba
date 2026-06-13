@@ -25,8 +25,8 @@ export function ArchiveView({ title, description, type, categories, showSearch =
         .eq("published", true)
         .order("publication_date", { ascending: false });
       if (type) {
-        if (Array.isArray(type)) q = q.in("type", type);
-        else q = q.eq("type", type);
+        if (Array.isArray(type)) q = q.in("type", type as any);
+        else q = q.eq("type", type as any);
       }
       const { data, error } = await q;
       if (error) throw error;
