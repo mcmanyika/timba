@@ -14,16 +14,147 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      publications: {
+        Row: {
+          author_id: string | null
+          body: string | null
+          category: Database["public"]["Enums"]["content_category"] | null
+          created_at: string
+          excerpt: string | null
+          featured_image_url: string | null
+          id: string
+          is_featured: boolean
+          location: string | null
+          media_embed_url: string | null
+          occasion: string | null
+          pdf_url: string | null
+          publication_date: string
+          publication_number: string
+          published: boolean
+          slug: string
+          title: string
+          type: Database["public"]["Enums"]["content_type"]
+          updated_at: string
+        }
+        Insert: {
+          author_id?: string | null
+          body?: string | null
+          category?: Database["public"]["Enums"]["content_category"] | null
+          created_at?: string
+          excerpt?: string | null
+          featured_image_url?: string | null
+          id?: string
+          is_featured?: boolean
+          location?: string | null
+          media_embed_url?: string | null
+          occasion?: string | null
+          pdf_url?: string | null
+          publication_date?: string
+          publication_number: string
+          published?: boolean
+          slug: string
+          title: string
+          type: Database["public"]["Enums"]["content_type"]
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string | null
+          body?: string | null
+          category?: Database["public"]["Enums"]["content_category"] | null
+          created_at?: string
+          excerpt?: string | null
+          featured_image_url?: string | null
+          id?: string
+          is_featured?: boolean
+          location?: string | null
+          media_embed_url?: string | null
+          occasion?: string | null
+          pdf_url?: string | null
+          publication_date?: string
+          publication_number?: string
+          published?: boolean
+          slug?: string
+          title?: string
+          type?: Database["public"]["Enums"]["content_type"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      subscribers: {
+        Row: {
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          source: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          first_name: string
+          id?: string
+          source?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          first_name?: string
+          id?: string
+          source?: string | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "editor" | "user"
+      content_category:
+        | "zimbabwe"
+        | "constitution_democracy"
+        | "africa"
+        | "global_affairs"
+        | "political_economy"
+        | "statecraft"
+        | "parliament"
+        | "conferences"
+        | "international"
+        | "dcp"
+        | "interviews"
+        | "podcasts"
+        | "television"
+      content_type: "essay" | "policy_paper" | "speech" | "book" | "media"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +281,24 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "editor", "user"],
+      content_category: [
+        "zimbabwe",
+        "constitution_democracy",
+        "africa",
+        "global_affairs",
+        "political_economy",
+        "statecraft",
+        "parliament",
+        "conferences",
+        "international",
+        "dcp",
+        "interviews",
+        "podcasts",
+        "television",
+      ],
+      content_type: ["essay", "policy_paper", "speech", "book", "media"],
+    },
   },
 } as const
