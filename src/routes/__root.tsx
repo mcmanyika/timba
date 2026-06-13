@@ -77,16 +77,29 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "The Timba Papers" },
+      {
+        name: "description",
+        content:
+          "Essays, policy papers, speeches and commentary by Jameson Timba on democracy, constitutionalism and political economy — with a focus on Zimbabwe and Africa.",
+      },
+      { name: "author", content: "Jameson Timba" },
+      { property: "og:title", content: "The Timba Papers" },
+      {
+        property: "og:description",
+        content:
+          "A publication series on democracy, constitutionalism and political economy — Zimbabwe and Africa.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap",
+      },
       {
         rel: "stylesheet",
         href: appCss,
