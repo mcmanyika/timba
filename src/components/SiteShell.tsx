@@ -10,6 +10,10 @@ const NAV = [
   { to: "/about", label: "About" },
 ] as const;
 
+const COFFEE_URL =
+  (import.meta.env.VITE_BUYMEACOFFEE_URL as string | undefined) ??
+  "https://www.buymeacoffee.com/jamesontimba";
+
 export function SiteShell({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
@@ -39,6 +43,14 @@ function SiteHeader() {
               {n.label}
             </Link>
           ))}
+          <a
+            href={COFFEE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 border border-gold/60 text-gold px-3 py-1.5 rounded-full text-xs uppercase tracking-wider hover:bg-gold hover:text-background transition-colors"
+          >
+            <span aria-hidden>☕</span> Buy me a coffee
+          </a>
         </nav>
       </div>
       <div className="md:hidden border-t border-divider">
@@ -53,6 +65,14 @@ function SiteHeader() {
               {n.label}
             </Link>
           ))}
+          <a
+            href={COFFEE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="whitespace-nowrap text-gold"
+          >
+            ☕ Coffee
+          </a>
         </div>
       </div>
     </header>
@@ -70,6 +90,14 @@ function SiteFooter() {
             by Jameson Timba on democracy, constitutionalism, and political economy —
             with a focus on Zimbabwe and Africa.
           </p>
+          <a
+            href={COFFEE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 mt-5 border border-gold/60 text-gold px-4 py-2 rounded-full text-xs uppercase tracking-wider hover:bg-gold hover:text-background transition-colors"
+          >
+            <span aria-hidden>☕</span> Support the work — Buy me a coffee
+          </a>
         </div>
         <div>
           <div className="pub-number mb-3">Sections</div>
