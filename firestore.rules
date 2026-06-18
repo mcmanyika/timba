@@ -38,10 +38,15 @@ service cloud.firestore {
 
     match /subscribers/{email} {
       allow create: if !exists(/databases/$(database)/documents/subscribers/$(email))
-        && request.resource.data.keys().hasAll(['first_name', 'email'])
+        && request.resource.data.email == email
         && request.resource.data.first_name is string
+        && request.resource.data.first_name.size() > 0
+        && request.resource.data.first_name.size() <= 100
         && request.resource.data.email is string
-        && request.resource.data.email == email;
+        && request.resource.data.email.size() <= 255
+        && request.resource.data.keys().hasOnly(['first_name', 'email', 'source', 'created_at'])
+        && (request.resource.data.source == null || request.resource.data.source is string)
+        && request.resource.data.created_at == request.time;
       allow read, delete: if isAdmin();
       allow update: if false;
     }

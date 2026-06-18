@@ -1,7 +1,7 @@
 import { FirebaseError } from "firebase/app";
 import { collection, doc, getDocs, orderBy, query, serverTimestamp, setDoc } from "firebase/firestore";
 
-import { db } from "@/integrations/firebase/client";
+import { getFirebaseDb } from "@/integrations/firebase/client";
 
 export interface Subscriber {
   id: string;
@@ -17,6 +17,7 @@ export async function subscribe(input: {
   source?: string | null;
 }): Promise<void> {
   const email = input.email.toLowerCase();
+  const db = getFirebaseDb();
   const ref = doc(db, "subscribers", email);
   await setDoc(ref, {
     first_name: input.first_name,
@@ -27,6 +28,7 @@ export async function subscribe(input: {
 }
 
 export async function listSubscribers(): Promise<Subscriber[]> {
+  const db = getFirebaseDb();
   const snap = await getDocs(
     query(collection(db, "subscribers"), orderBy("created_at", "desc")),
   );
