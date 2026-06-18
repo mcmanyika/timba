@@ -22,9 +22,8 @@ export function AdminGuard({ children }: { children: ReactNode }) {
           <div className="pub-number">Restricted</div>
           <h1 className="mt-3 font-serif text-3xl">Admin access required</h1>
           <p className="mt-4 text-text-secondary text-sm">
-            Signed in as <span className="text-foreground">{userEmail}</span>. A project
-            administrator must grant you a role in the Firestore{" "}
-            <code>userRoles</code> collection.
+            Signed in as <span className="text-foreground">{userEmail}</span>. An
+            administrator must grant you editor or admin access from the Users page.
           </p>
           <button onClick={signOut} className="mt-6 text-gold text-sm">
             Sign out →

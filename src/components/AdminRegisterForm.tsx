@@ -88,8 +88,8 @@ export function AdminRegisterForm() {
       </form>
 
       <p className="mt-8 text-xs text-text-secondary">
-        New accounts cannot publish until a role is added in the Firestore{" "}
-        <code>userRoles</code> collection.
+        New accounts cannot publish until an administrator grants access from the
+        Users page.
       </p>
     </AdminAuthShell>
   );

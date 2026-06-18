@@ -7,6 +7,7 @@ import {
 import { doc, getDoc } from "firebase/firestore";
 
 import { getFirebaseAuth, getFirebaseDb } from "@/integrations/firebase/client";
+import { ensureUserProfile } from "@/lib/firebase/users";
 
 /** Wait until Firebase has restored auth state from persistence. */
 export async function waitForAuthUser(): Promise<User | null> {
@@ -19,6 +20,7 @@ export async function signIn(email: string, password: string) {
   const auth = getFirebaseAuth();
   const cred = await signInWithEmailAndPassword(auth, email, password);
   await auth.authStateReady();
+  await ensureUserProfile(cred.user);
   return cred;
 }
 
@@ -26,6 +28,7 @@ export async function signUp(email: string, password: string) {
   const auth = getFirebaseAuth();
   const cred = await createUserWithEmailAndPassword(auth, email, password);
   await auth.authStateReady();
+  await ensureUserProfile(cred.user);
   return cred;
 }
 

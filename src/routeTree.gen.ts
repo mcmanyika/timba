@@ -23,6 +23,7 @@ import { Route as AdminRegisterRouteImport } from './routes/admin.register'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin.users'
 import { Route as AuthenticatedAdminSubscribersRouteImport } from './routes/_authenticated/admin.subscribers'
 import { Route as AuthenticatedAdminPublicationsRouteImport } from './routes/_authenticated/admin.publications'
 import { Route as AuthenticatedAdminEditorIdRouteImport } from './routes/_authenticated/admin.editor.$id'
@@ -96,6 +97,11 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
 const AuthenticatedAdminSubscribersRoute =
   AuthenticatedAdminSubscribersRouteImport.update({
     id: '/subscribers',
@@ -130,6 +136,7 @@ export interface FileRoutesByFullPath {
   '/p/$slug': typeof PSlugRoute
   '/admin/publications': typeof AuthenticatedAdminPublicationsRoute
   '/admin/subscribers': typeof AuthenticatedAdminSubscribersRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/admin/editor/$id': typeof AuthenticatedAdminEditorIdRoute
 }
@@ -147,6 +154,7 @@ export interface FileRoutesByTo {
   '/p/$slug': typeof PSlugRoute
   '/admin/publications': typeof AuthenticatedAdminPublicationsRoute
   '/admin/subscribers': typeof AuthenticatedAdminSubscribersRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/admin/editor/$id': typeof AuthenticatedAdminEditorIdRoute
 }
@@ -167,6 +175,7 @@ export interface FileRoutesById {
   '/p/$slug': typeof PSlugRoute
   '/_authenticated/admin/publications': typeof AuthenticatedAdminPublicationsRoute
   '/_authenticated/admin/subscribers': typeof AuthenticatedAdminSubscribersRoute
+  '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/admin/editor/$id': typeof AuthenticatedAdminEditorIdRoute
 }
@@ -187,6 +196,7 @@ export interface FileRouteTypes {
     | '/p/$slug'
     | '/admin/publications'
     | '/admin/subscribers'
+    | '/admin/users'
     | '/admin/'
     | '/admin/editor/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -204,6 +214,7 @@ export interface FileRouteTypes {
     | '/p/$slug'
     | '/admin/publications'
     | '/admin/subscribers'
+    | '/admin/users'
     | '/admin'
     | '/admin/editor/$id'
   id:
@@ -223,6 +234,7 @@ export interface FileRouteTypes {
     | '/p/$slug'
     | '/_authenticated/admin/publications'
     | '/_authenticated/admin/subscribers'
+    | '/_authenticated/admin/users'
     | '/_authenticated/admin/'
     | '/_authenticated/admin/editor/$id'
   fileRoutesById: FileRoutesById
@@ -342,6 +354,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/users': {
+      id: '/_authenticated/admin/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AuthenticatedAdminUsersRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/subscribers': {
       id: '/_authenticated/admin/subscribers'
       path: '/subscribers'
@@ -369,6 +388,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminPublicationsRoute: typeof AuthenticatedAdminPublicationsRoute
   AuthenticatedAdminSubscribersRoute: typeof AuthenticatedAdminSubscribersRoute
+  AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
   AuthenticatedAdminEditorIdRoute: typeof AuthenticatedAdminEditorIdRoute
 }
@@ -376,6 +396,7 @@ interface AuthenticatedAdminRouteChildren {
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminPublicationsRoute: AuthenticatedAdminPublicationsRoute,
   AuthenticatedAdminSubscribersRoute: AuthenticatedAdminSubscribersRoute,
+  AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
   AuthenticatedAdminEditorIdRoute: AuthenticatedAdminEditorIdRoute,
 }

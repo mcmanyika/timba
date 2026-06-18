@@ -1,19 +1,23 @@
-import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState, getRouteApi } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { signOutUser } from "@/lib/firebase/auth";
 
+const adminRoute = getRouteApi("/_authenticated/admin");
+
 const NAV = [
   { to: "/admin", label: "Dashboard", exact: true },
   { to: "/admin/publications", label: "Publications" },
   { to: "/admin/subscribers", label: "Subscribers" },
+  { to: "/admin/users", label: "Users", adminOnly: true },
 ] as const;
 
 export function AdminShell({ children }: { children: ReactNode }) {
   const nav = useNavigate();
   const qc = useQueryClient();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { isAdmin } = adminRoute.useRouteContext();
 
   async function signOut() {
     await qc.cancelQueries();
@@ -38,19 +42,21 @@ export function AdminShell({ children }: { children: ReactNode }) {
           </Link>
         </div>
         <nav className="flex-1 px-3 py-4 space-y-1">
-          {NAV.map((item) => (
+          {NAV.filter((item) => !("adminOnly" in item && item.adminOnly) || isAdmin).map(
+            (item) => (
             <Link
               key={item.to}
               to={item.to}
               className={`block px-3 py-2 text-sm rounded transition-colors ${
-                isActive(item.to, item.exact)
+                isActive(item.to, "exact" in item ? item.exact : undefined)
                   ? "bg-surface text-gold border border-divider"
                   : "text-text-secondary hover:text-foreground"
               }`}
             >
               {item.label}
             </Link>
-          ))}
+          ),
+          )}
         </nav>
         <div className="px-3 py-4 border-t border-divider space-y-1">
           <Link
@@ -87,6 +93,11 @@ export function AdminShell({ children }: { children: ReactNode }) {
             <Link to="/admin/subscribers" className="text-text-secondary">
               Subscribers
             </Link>
+            {isAdmin && (
+              <Link to="/admin/users" className="text-text-secondary">
+                Users
+              </Link>
+            )}
             <button onClick={signOut} className="text-text-secondary">
               Sign out
             </button>
