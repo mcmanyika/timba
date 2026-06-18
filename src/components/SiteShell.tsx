@@ -116,8 +116,8 @@ function SiteFooter() {
             <br />
             All rights reserved.
           </p>
-          <Link to="/auth" className="inline-block mt-4 text-text-secondary hover:text-gold text-xs">
-            Editor sign in →
+          <Link to="/admin/login" className="inline-block mt-4 text-text-secondary hover:text-gold text-xs">
+            Admin sign in →
           </Link>
         </div>
       </div>

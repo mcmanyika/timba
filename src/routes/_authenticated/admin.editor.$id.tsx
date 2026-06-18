@@ -1,8 +1,14 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { SiteShell } from "@/components/SiteShell";
-import { supabase } from "@/integrations/supabase/client";
+import { AdminPageHeader } from "@/components/admin/AdminLayout";
+import { RichTextEditor } from "@/components/RichTextEditor";
 import { ALL_CATEGORIES, CATEGORY_LABELS } from "@/lib/categories";
+import { isEmptyEditorHtml, normalizeBodyForEditor } from "@/lib/body-content";
+import {
+  createPublication,
+  getPublicationById,
+  updatePublication,
+} from "@/lib/firebase/publications";
 
 export const Route = createFileRoute("/_authenticated/admin/editor/$id")({
   component: Editor,
@@ -48,7 +54,7 @@ function Editor() {
   useEffect(() => {
     if (isNew) return;
     (async () => {
-      const { data } = await supabase.from("publications").select("*").eq("id", id).maybeSingle();
+      const data = await getPublicationById(id);
       if (data) {
         setForm({
           type: data.type,
@@ -56,7 +62,7 @@ function Editor() {
           title: data.title,
           slug: data.slug,
           excerpt: data.excerpt ?? "",
-          body: data.body ?? "",
+          body: normalizeBodyForEditor(data.body),
           location: data.location ?? "",
           occasion: data.occasion ?? "",
           featured_image_url: data.featured_image_url ?? "",
@@ -76,47 +82,53 @@ function Editor() {
     e.preventDefault();
     setSaving(true);
     setErr(null);
-    const payload: any = {
-      ...form,
-      slug: form.slug || slugify(form.title),
+    const payload = {
+      type: form.type,
       category: form.category || null,
-      publication_number: form.publication_number || null,
+      title: form.title,
+      slug: form.slug || slugify(form.title),
+      excerpt: form.excerpt || null,
+      body: isEmptyEditorHtml(form.body) ? null : form.body,
+      location: form.location || null,
+      occasion: form.occasion || null,
+      featured_image_url: form.featured_image_url || null,
+      pdf_url: form.pdf_url || null,
+      media_embed_url: form.media_embed_url || null,
+      publication_date: form.publication_date,
+      published: form.published,
+      is_featured: form.is_featured,
+      publication_number: form.publication_number || undefined,
     };
-    const op = isNew
-      ? supabase.from("publications").insert(payload).select().single()
-      : supabase.from("publications").update(payload).eq("id", id).select().single();
-    const { error } = await op;
-    setSaving(false);
-    if (error) {
-      setErr(error.message);
-      return;
+    try {
+      if (isNew) {
+        await createPublication(payload);
+      } else {
+        await updatePublication(id, payload);
+      }
+      nav({ to: "/admin/publications" });
+    } catch (error) {
+      setErr(error instanceof Error ? error.message : "Failed to save publication");
+    } finally {
+      setSaving(false);
     }
-    nav({ to: "/admin" });
   }
 
   if (loading) {
-    return (
-      <SiteShell>
-        <div className="max-w-3xl mx-auto px-6 py-20 text-text-secondary">Loading…</div>
-      </SiteShell>
-    );
+    return <p className="text-text-secondary">Loading…</p>;
   }
 
   return (
-    <SiteShell>
-      <form onSubmit={save} className="max-w-3xl mx-auto px-6 lg:px-10 py-12 space-y-6">
-        <div className="flex items-center justify-between border-b border-divider pb-6">
-          <div>
-            <div className="pub-number">{isNew ? "New" : form.publication_number || "Edit"}</div>
-            <h1 className="mt-2 font-serif text-3xl">
-              {isNew ? "New publication" : "Edit publication"}
-            </h1>
-          </div>
-          <Link to="/admin" className="text-text-secondary text-sm hover:text-gold">
+    <>
+      <AdminPageHeader
+        title={isNew ? "New publication" : "Edit publication"}
+        description={isNew ? undefined : form.publication_number || undefined}
+        actions={
+          <Link to="/admin/publications" className="text-sm text-text-secondary hover:text-gold">
             ← Back
           </Link>
-        </div>
-
+        }
+      />
+      <form onSubmit={save} className="max-w-3xl space-y-6">
         <div className="grid grid-cols-2 gap-4">
           <Field label="Type">
             <select
@@ -199,12 +211,10 @@ function Editor() {
           />
         </Field>
 
-        <Field label="Body (markdown-ish; use ## for subheadings, blank line between paragraphs)">
-          <textarea
+        <Field label="Body">
+          <RichTextEditor
             value={form.body}
-            onChange={(e) => setForm({ ...form, body: e.target.value })}
-            rows={18}
-            className={inputCls + " font-mono text-sm"}
+            onChange={(html) => setForm({ ...form, body: html })}
           />
         </Field>
 
@@ -268,12 +278,15 @@ function Editor() {
           >
             {saving ? "Saving…" : "Save publication"}
           </button>
-          <Link to="/admin" className="px-6 py-3 text-xs uppercase tracking-wider border border-divider">
+          <Link
+            to="/admin/publications"
+            className="px-6 py-3 text-xs uppercase tracking-wider border border-divider"
+          >
             Cancel
           </Link>
         </div>
       </form>
-    </SiteShell>
+    </>
   );
 }
 

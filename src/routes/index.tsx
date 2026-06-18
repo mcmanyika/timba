@@ -1,10 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import { SiteShell } from "@/components/SiteShell";
 import { PublicationCard } from "@/components/PublicationCard";
 import { SubscribeBlock } from "@/components/SubscribeBlock";
 import { CATEGORY_LABELS, TYPE_LABELS, formatDate, type Publication } from "@/lib/categories";
+import { listPublishedPublications } from "@/lib/firebase/publications";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -24,14 +24,7 @@ function Home() {
   const { data, isLoading } = useQuery({
     queryKey: ["home-publications"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("publications")
-        .select("*")
-        .eq("published", true)
-        .order("publication_date", { ascending: false })
-        .limit(20);
-      if (error) throw error;
-      return data as Publication[];
+      return listPublishedPublications({ limit: 20 }) as Promise<Publication[]>;
     },
   });
 

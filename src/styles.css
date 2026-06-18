@@ -148,4 +148,69 @@
     margin-bottom: 0.5em;
     font-size: 1.5rem;
   }
+
+  .prose-paper h3,
+  .publication-body-html h3 {
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    font-size: 1.25rem;
+    font-family: var(--font-serif);
+  }
+
+  .publication-body-html ul,
+  .publication-body-html ol {
+    margin: 1em 0 1.25em 1.25em;
+    padding-left: 0.5em;
+  }
+
+  .publication-body-html li {
+    margin-bottom: 0.35em;
+    line-height: 1.7;
+  }
+
+  .publication-body-html blockquote {
+    margin: 1.5em 0;
+    padding-left: 1rem;
+    border-left: 2px solid var(--color-gold);
+    color: var(--color-text-secondary);
+    font-style: italic;
+  }
+
+  .publication-body-html a {
+    color: var(--color-gold);
+    text-decoration: underline;
+  }
+
+  .tiptap-editor p {
+    margin-bottom: 0.75em;
+    line-height: 1.7;
+  }
+
+  .tiptap-editor h2,
+  .tiptap-editor h3 {
+    font-family: var(--font-serif);
+    margin-top: 1.25em;
+    margin-bottom: 0.5em;
+  }
+
+  .tiptap-editor h2 {
+    font-size: 1.35rem;
+  }
+
+  .tiptap-editor ul,
+  .tiptap-editor ol {
+    margin: 0.75em 0 0.75em 1.25em;
+    padding-left: 0.5em;
+  }
+
+  .tiptap-editor blockquote {
+    margin: 1em 0;
+    padding-left: 1rem;
+    border-left: 2px solid var(--color-gold);
+    color: var(--color-text-secondary);
+  }
+
+  .tiptap-editor:focus {
+    outline: none;
+  }
 }

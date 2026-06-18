@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import { PublicationCard } from "@/components/PublicationCard";
 import { CATEGORY_LABELS, type Publication } from "@/lib/categories";
+import { listPublishedPublications } from "@/lib/firebase/publications";
 
 interface Props {
   title: string;
@@ -19,18 +19,7 @@ export function ArchiveView({ title, description, type, categories, showSearch =
   const { data, isLoading } = useQuery({
     queryKey: ["archive", type, categories],
     queryFn: async () => {
-      let q = supabase
-        .from("publications")
-        .select("*")
-        .eq("published", true)
-        .order("publication_date", { ascending: false });
-      if (type) {
-        if (Array.isArray(type)) q = q.in("type", type as any);
-        else q = q.eq("type", type as any);
-      }
-      const { data, error } = await q;
-      if (error) throw error;
-      return data as Publication[];
+      return listPublishedPublications({ type }) as Promise<Publication[]>;
     },
   });
 

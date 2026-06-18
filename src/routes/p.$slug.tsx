@@ -1,9 +1,10 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { PublicationBody } from "@/components/PublicationBody";
 import { SiteShell } from "@/components/SiteShell";
 import { SubscribeBlock } from "@/components/SubscribeBlock";
-import { supabase } from "@/integrations/supabase/client";
-import { CATEGORY_LABELS, TYPE_LABELS, formatDate, type Publication } from "@/lib/categories";
+import { CATEGORY_LABELS, TYPE_LABELS, formatDate } from "@/lib/categories";
+import { getPublicationBySlug } from "@/lib/firebase/publications";
 
 export const Route = createFileRoute("/p/$slug")({
   component: Detail,
@@ -35,15 +36,9 @@ function Detail() {
   const { data, isLoading } = useQuery({
     queryKey: ["pub", slug],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("publications")
-        .select("*")
-        .eq("slug", slug)
-        .eq("published", true)
-        .maybeSingle();
-      if (error) throw error;
+      const data = await getPublicationBySlug(slug);
       if (!data) throw notFound();
-      return data as Publication;
+      return data;
     },
   });
 
@@ -75,14 +70,8 @@ function Detail() {
           </p>
         )}
         <div className="gold-rule mt-10" />
-        <div className="mt-10 prose-paper text-lg">
-          {(data.body ?? "").split(/\n+/).map((para, i) =>
-            para.startsWith("## ") ? (
-              <h2 key={i}>{para.replace(/^##\s+/, "")}</h2>
-            ) : (
-              <p key={i}>{para}</p>
-            ),
-          )}
+        <div className="mt-10">
+          <PublicationBody body={data.body} />
         </div>
 
         {data.media_embed_url && (

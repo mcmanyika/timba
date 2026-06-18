@@ -3,8 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { SiteShell } from "@/components/SiteShell";
 import { SubscribeBlock } from "@/components/SubscribeBlock";
-import { supabase } from "@/integrations/supabase/client";
-import { CATEGORY_LABELS, SPEECH_CATEGORIES, formatDate, type Publication } from "@/lib/categories";
+import { CATEGORY_LABELS, SPEECH_CATEGORIES, formatDate } from "@/lib/categories";
+import { listPublishedPublications } from "@/lib/firebase/publications";
 
 export const Route = createFileRoute("/speeches")({
   head: () => ({
@@ -25,16 +25,7 @@ function Speeches() {
   const [cat, setCat] = useState<string>("all");
   const { data } = useQuery({
     queryKey: ["speeches"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("publications")
-        .select("*")
-        .eq("published", true)
-        .eq("type", "speech")
-        .order("publication_date", { ascending: false });
-      if (error) throw error;
-      return data as Publication[];
-    },
+    queryFn: () => listPublishedPublications({ type: "speech" }),
   });
   const list = (data ?? []).filter((p) => cat === "all" || p.category === cat);
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { z } from "zod";
-import { supabase } from "@/integrations/supabase/client";
+import { isDuplicateSubscriberError, subscribe } from "@/lib/firebase/subscribers";
 
 const schema = z.object({
   first_name: z.string().trim().min(1, "Name required").max(100),
@@ -22,15 +22,16 @@ export function SubscribeBlock({ variant = "panel" }: { variant?: "panel" | "inl
       return;
     }
     setState("loading");
-    const { error } = await supabase.from("subscribers").insert({
-      first_name: parsed.data.first_name,
-      email: parsed.data.email.toLowerCase(),
-      source: typeof window !== "undefined" ? window.location.pathname : null,
-    });
-    if (error) {
+    try {
+      await subscribe({
+        first_name: parsed.data.first_name,
+        email: parsed.data.email.toLowerCase(),
+        source: typeof window !== "undefined" ? window.location.pathname : null,
+      });
+    } catch (error) {
       setState("error");
       setMsg(
-        error.code === "23505"
+        isDuplicateSubscriberError(error)
           ? "You're already on the list — thank you."
           : "Something went wrong. Please try again.",
       );

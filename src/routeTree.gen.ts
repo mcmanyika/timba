@@ -19,8 +19,12 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PSlugRouteImport } from './routes/p.$slug'
+import { Route as AdminRegisterRouteImport } from './routes/admin.register'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminSubscribersRouteImport } from './routes/_authenticated/admin.subscribers'
+import { Route as AuthenticatedAdminPublicationsRouteImport } from './routes/_authenticated/admin.publications'
 import { Route as AuthenticatedAdminEditorIdRouteImport } from './routes/_authenticated/admin.editor.$id'
 
 const SpeechesRoute = SpeechesRouteImport.update({
@@ -72,15 +76,36 @@ const PSlugRoute = PSlugRouteImport.update({
   path: '/p/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRegisterRoute = AdminRegisterRouteImport.update({
+  id: '/admin/register',
+  path: '/admin/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
 const AuthenticatedAdminSubscribersRoute =
   AuthenticatedAdminSubscribersRouteImport.update({
     id: '/subscribers',
     path: '/subscribers',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminPublicationsRoute =
+  AuthenticatedAdminPublicationsRouteImport.update({
+    id: '/publications',
+    path: '/publications',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedAdminEditorIdRoute =
@@ -100,8 +125,12 @@ export interface FileRoutesByFullPath {
   '/policy': typeof PolicyRoute
   '/speeches': typeof SpeechesRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/register': typeof AdminRegisterRoute
   '/p/$slug': typeof PSlugRoute
+  '/admin/publications': typeof AuthenticatedAdminPublicationsRoute
   '/admin/subscribers': typeof AuthenticatedAdminSubscribersRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
   '/admin/editor/$id': typeof AuthenticatedAdminEditorIdRoute
 }
 export interface FileRoutesByTo {
@@ -113,9 +142,12 @@ export interface FileRoutesByTo {
   '/papers': typeof PapersRoute
   '/policy': typeof PolicyRoute
   '/speeches': typeof SpeechesRoute
-  '/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/register': typeof AdminRegisterRoute
   '/p/$slug': typeof PSlugRoute
+  '/admin/publications': typeof AuthenticatedAdminPublicationsRoute
   '/admin/subscribers': typeof AuthenticatedAdminSubscribersRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
   '/admin/editor/$id': typeof AuthenticatedAdminEditorIdRoute
 }
 export interface FileRoutesById {
@@ -130,8 +162,12 @@ export interface FileRoutesById {
   '/policy': typeof PolicyRoute
   '/speeches': typeof SpeechesRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/register': typeof AdminRegisterRoute
   '/p/$slug': typeof PSlugRoute
+  '/_authenticated/admin/publications': typeof AuthenticatedAdminPublicationsRoute
   '/_authenticated/admin/subscribers': typeof AuthenticatedAdminSubscribersRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/admin/editor/$id': typeof AuthenticatedAdminEditorIdRoute
 }
 export interface FileRouteTypes {
@@ -146,8 +182,12 @@ export interface FileRouteTypes {
     | '/policy'
     | '/speeches'
     | '/admin'
+    | '/admin/login'
+    | '/admin/register'
     | '/p/$slug'
+    | '/admin/publications'
     | '/admin/subscribers'
+    | '/admin/'
     | '/admin/editor/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -159,9 +199,12 @@ export interface FileRouteTypes {
     | '/papers'
     | '/policy'
     | '/speeches'
-    | '/admin'
+    | '/admin/login'
+    | '/admin/register'
     | '/p/$slug'
+    | '/admin/publications'
     | '/admin/subscribers'
+    | '/admin'
     | '/admin/editor/$id'
   id:
     | '__root__'
@@ -175,8 +218,12 @@ export interface FileRouteTypes {
     | '/policy'
     | '/speeches'
     | '/_authenticated/admin'
+    | '/admin/login'
+    | '/admin/register'
     | '/p/$slug'
+    | '/_authenticated/admin/publications'
     | '/_authenticated/admin/subscribers'
+    | '/_authenticated/admin/'
     | '/_authenticated/admin/editor/$id'
   fileRoutesById: FileRoutesById
 }
@@ -190,6 +237,8 @@ export interface RootRouteChildren {
   PapersRoute: typeof PapersRoute
   PolicyRoute: typeof PolicyRoute
   SpeechesRoute: typeof SpeechesRoute
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminRegisterRoute: typeof AdminRegisterRoute
   PSlugRoute: typeof PSlugRoute
 }
 
@@ -265,6 +314,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/register': {
+      id: '/admin/register'
+      path: '/admin/register'
+      fullPath: '/admin/register'
+      preLoaderRoute: typeof AdminRegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
       path: '/admin'
@@ -272,11 +335,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/subscribers': {
       id: '/_authenticated/admin/subscribers'
       path: '/subscribers'
       fullPath: '/admin/subscribers'
       preLoaderRoute: typeof AuthenticatedAdminSubscribersRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/publications': {
+      id: '/_authenticated/admin/publications'
+      path: '/publications'
+      fullPath: '/admin/publications'
+      preLoaderRoute: typeof AuthenticatedAdminPublicationsRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/editor/$id': {
@@ -290,12 +367,16 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminPublicationsRoute: typeof AuthenticatedAdminPublicationsRoute
   AuthenticatedAdminSubscribersRoute: typeof AuthenticatedAdminSubscribersRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
   AuthenticatedAdminEditorIdRoute: typeof AuthenticatedAdminEditorIdRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminPublicationsRoute: AuthenticatedAdminPublicationsRoute,
   AuthenticatedAdminSubscribersRoute: AuthenticatedAdminSubscribersRoute,
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
   AuthenticatedAdminEditorIdRoute: AuthenticatedAdminEditorIdRoute,
 }
 
@@ -323,8 +404,20 @@ const rootRouteChildren: RootRouteChildren = {
   PapersRoute: PapersRoute,
   PolicyRoute: PolicyRoute,
   SpeechesRoute: SpeechesRoute,
+  AdminLoginRoute: AdminLoginRoute,
+  AdminRegisterRoute: AdminRegisterRoute,
   PSlugRoute: PSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

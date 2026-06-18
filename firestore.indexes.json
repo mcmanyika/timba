@@ -1,0 +1,30 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "publications",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "published", "order": "ASCENDING" },
+        { "fieldPath": "publication_date", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "publications",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "published", "order": "ASCENDING" },
+        { "fieldPath": "type", "order": "ASCENDING" },
+        { "fieldPath": "publication_date", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "publications",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "slug", "order": "ASCENDING" },
+        { "fieldPath": "published", "order": "ASCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

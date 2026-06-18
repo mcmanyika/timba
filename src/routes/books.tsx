@@ -2,8 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { SiteShell } from "@/components/SiteShell";
 import { SubscribeBlock } from "@/components/SubscribeBlock";
-import { supabase } from "@/integrations/supabase/client";
-import { formatDate, type Publication } from "@/lib/categories";
+import { formatDate } from "@/lib/categories";
+import { listPublishedPublications } from "@/lib/firebase/publications";
 
 export const Route = createFileRoute("/books")({
   head: () => ({
@@ -23,16 +23,7 @@ export const Route = createFileRoute("/books")({
 function Books() {
   const { data } = useQuery({
     queryKey: ["books"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("publications")
-        .select("*")
-        .eq("published", true)
-        .eq("type", "book")
-        .order("publication_date", { ascending: false });
-      if (error) throw error;
-      return data as Publication[];
-    },
+    queryFn: () => listPublishedPublications({ type: "book" }),
   });
 
   return (
