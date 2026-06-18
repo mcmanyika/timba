@@ -52,7 +52,7 @@ export function SubscribeBlock({ variant = "panel" }: { variant?: "panel" | "inl
     <section className={wrap}>
       <div className="pub-number">Subscribe</div>
       <h3 className="mt-3 font-serif text-2xl md:text-3xl max-w-2xl">
-        Receive future essays, speeches and policy papers from Jameson Timba.
+        Receive future essays, speeches and policy papers.
       </h3>
       <p className="mt-3 text-text-secondary max-w-xl text-sm">
         Delivered occasionally. No advertising. Unsubscribe at any time.
