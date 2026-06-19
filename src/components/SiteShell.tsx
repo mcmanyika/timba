@@ -112,7 +112,7 @@ function SiteFooter() {
         <div>
           <div className="pub-number mb-3">Editorial</div>
           <p className="text-text-secondary">
-            © {new Date().getFullYear()} The Timba Papers
+            © {new Date().getFullYear()} Jameson Timba
             <br />
             All rights reserved.
           </p>
