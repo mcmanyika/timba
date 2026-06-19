@@ -1,6 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 
+import { ThemeToggle } from "@/components/ThemeToggle";
+
 const NAV = [
   { to: "/papers", label: "The Papers" },
   { to: "/policy", label: "Policy" },
@@ -30,7 +32,7 @@ function SiteHeader() {
           <span className="pub-number">Volume I · 2025–2026</span>
           <span className="font-serif text-2xl md:text-3xl mt-1">The Timba Papers</span>
         </Link>
-        <nav className="hidden md:flex items-center gap-7 text-sm">
+        <nav className="hidden md:flex items-center gap-5 text-sm">
           {NAV.map((n) => (
             <Link
               key={n.to}
@@ -41,6 +43,7 @@ function SiteHeader() {
               {n.label}
             </Link>
           ))}
+          <ThemeToggle />
           <a
             href={COFFEE_URL}
             target="_blank"
@@ -52,7 +55,7 @@ function SiteHeader() {
         </nav>
       </div>
       <div className="md:hidden border-t border-divider">
-        <div className="max-w-7xl mx-auto px-6 py-3 flex gap-5 overflow-x-auto text-sm">
+        <div className="max-w-7xl mx-auto px-6 py-3 flex items-center gap-5 overflow-x-auto text-sm">
           {NAV.map((n) => (
             <Link
               key={n.to}
@@ -63,6 +66,7 @@ function SiteHeader() {
               {n.label}
             </Link>
           ))}
+          <ThemeToggle className="shrink-0" />
           <a
             href={COFFEE_URL}
             target="_blank"

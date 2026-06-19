@@ -1,6 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 
+import { ThemeToggle } from "@/components/ThemeToggle";
+
 export function AdminAuthShell({
   title,
   description,
@@ -15,11 +17,12 @@ export function AdminAuthShell({
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <header className="border-b border-divider">
-        <div className="max-w-md mx-auto px-6 py-6">
+        <div className="max-w-md mx-auto px-6 py-6 flex items-start justify-between gap-4">
           <Link to="/" className="flex flex-col leading-none">
             <span className="pub-number">Editorial Desk</span>
             <span className="font-serif text-2xl mt-1">The Timba Papers</span>
           </Link>
+          <ThemeToggle />
         </div>
       </header>
 

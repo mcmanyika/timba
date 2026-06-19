@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { signOutUser } from "@/lib/firebase/auth";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const adminRoute = getRouteApi("/_authenticated/admin");
 
@@ -59,6 +60,10 @@ export function AdminShell({ children }: { children: ReactNode }) {
           )}
         </nav>
         <div className="px-3 py-4 border-t border-divider space-y-1">
+          <div className="px-3 py-2 flex items-center justify-between">
+            <span className="text-xs text-text-secondary uppercase tracking-wider">Theme</span>
+            <ThemeToggle />
+          </div>
           <Link
             to="/admin/editor/$id"
             params={{ id: "new" }}
@@ -86,7 +91,8 @@ export function AdminShell({ children }: { children: ReactNode }) {
           <Link to="/admin" className="font-serif text-lg">
             Admin
           </Link>
-          <div className="flex items-center gap-3 text-xs">
+          <div className="flex items-center gap-2 text-xs">
+            <ThemeToggle className="size-8" />
             <Link to="/admin/publications" className="text-text-secondary">
               Publications
             </Link>

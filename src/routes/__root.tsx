@@ -9,7 +9,10 @@ import {
 } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 
+import { ThemeProvider } from "@/components/ThemeProvider";
 import appCss from "../styles.css?url";
+
+const themeInitScript = `(function(){try{var t=localStorage.getItem("timba-theme");if(t==="light")document.documentElement.classList.add("light");}catch(e){}})();`;
 
 function NotFoundComponent() {
   return (
@@ -110,8 +113,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <HeadContent />
       </head>
       <body>
@@ -127,8 +131,10 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <ThemeProvider>
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <Outlet />
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

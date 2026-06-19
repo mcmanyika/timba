@@ -105,6 +105,44 @@
   --sidebar-ring: var(--gold);
 }
 
+html {
+  color-scheme: dark;
+}
+
+html.light {
+  color-scheme: light;
+
+  --background: oklch(0.97 0.008 85);
+  --foreground: oklch(0.2 0.015 75);
+  --surface: oklch(0.94 0.012 82);
+  --gold: oklch(0.52 0.13 68);
+  --gold-soft: oklch(0.52 0.13 68 / 0.14);
+  --text-secondary: oklch(0.48 0.02 75);
+  --divider: oklch(0.87 0.012 82);
+
+  --card: var(--surface);
+  --card-foreground: var(--foreground);
+  --popover: var(--surface);
+  --popover-foreground: var(--foreground);
+  --primary: var(--gold);
+  --primary-foreground: oklch(0.97 0.008 85);
+  --secondary: var(--surface);
+  --secondary-foreground: var(--foreground);
+  --muted: var(--surface);
+  --muted-foreground: var(--text-secondary);
+  --accent: var(--gold-soft);
+  --accent-foreground: var(--foreground);
+  --border: var(--divider);
+  --input: var(--divider);
+  --sidebar: var(--surface);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--gold);
+  --sidebar-primary-foreground: oklch(0.97 0.008 85);
+  --sidebar-accent: var(--gold-soft);
+  --sidebar-accent-foreground: var(--foreground);
+  --sidebar-border: var(--divider);
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
