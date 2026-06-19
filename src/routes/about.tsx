@@ -24,6 +24,15 @@ function About() {
         <div className="pub-number">About the author</div>
         <h1 className="mt-3 font-serif text-5xl md:text-6xl leading-tight">Jameson Timba</h1>
         <div className="gold-rule mt-8" />
+        <figure className="mt-10 max-w-xs">
+          <img
+            src="/images/timba.jpeg"
+            alt="Jameson Timba"
+            width={320}
+            height={400}
+            className="w-full border border-divider object-cover aspect-[4/5]"
+          />
+        </figure>
         <div className="mt-10 prose-paper text-lg">
           <p>
             Jameson Timba is a Zimbabwean public intellectual, politician and policy
