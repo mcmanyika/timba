@@ -12,7 +12,7 @@ import type { ReactNode } from "react";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import appCss from "../styles.css?url";
 
-const themeInitScript = `(function(){try{var t=localStorage.getItem("timba-theme");if(t==="light")document.documentElement.classList.add("light");}catch(e){}})();`;
+const themeInitScript = `(function(){try{var t=localStorage.getItem("timba-theme");if(t==="dark")document.documentElement.classList.add("dark");}catch(e){}})();`;
 
 function NotFoundComponent() {
   return (

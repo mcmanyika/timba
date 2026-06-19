@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 
-import { applyTheme, getStoredTheme, setStoredTheme, type Theme } from "@/lib/theme";
+import { applyTheme, DEFAULT_THEME, getStoredTheme, setStoredTheme, type Theme } from "@/lib/theme";
 
 const ThemeContext = createContext<{
   theme: Theme;
@@ -9,7 +9,7 @@ const ThemeContext = createContext<{
 } | null>(null);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("dark");
+  const [theme, setThemeState] = useState<Theme>(DEFAULT_THEME);
 
   useEffect(() => {
     const stored = getStoredTheme();
