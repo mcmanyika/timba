@@ -158,6 +158,26 @@ html.dark {
     text-rendering: optimizeLegibility;
   }
 
+  a,
+  a[href],
+  area[href],
+  [role="link"],
+  .publication-body-html a {
+    cursor: pointer;
+  }
+
+  button:not(:disabled),
+  [type="button"]:not(:disabled),
+  [type="submit"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  [type="button"]:disabled,
+  [type="submit"]:disabled {
+    cursor: not-allowed;
+  }
+
   h1, h2, h3, h4 {
     font-family: var(--font-serif);
     letter-spacing: -0.01em;
