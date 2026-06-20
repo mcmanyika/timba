@@ -197,7 +197,7 @@ export function ChatWidget() {
           aria-label={open ? "Close chat" : "Open chat assistant"}
         >
           {open ? <X className="size-4" /> : <MessageCircle className="size-4" />}
-          {open ? "Close" : "Ask"}
+          {open ? "Close" : "Let's Chat"}
         </button>
       </div>
     </>
