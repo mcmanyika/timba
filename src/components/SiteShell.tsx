@@ -29,7 +29,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
 
 function SiteHeader() {
   return (
-    <header className="border-b border-divider">
+    <header className="sticky top-0 z-30 border-b border-divider bg-background">
       <div className="max-w-7xl mx-auto px-6 lg:px-10 py-6 flex items-center justify-between gap-6">
         <Link to="/" className="flex flex-col leading-none">
           <span className="pub-number">Volume I · 2025–2026</span>
