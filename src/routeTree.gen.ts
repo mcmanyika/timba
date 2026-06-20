@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SpeechesRouteImport } from './routes/speeches'
+import { Route as QuotesRouteImport } from './routes/quotes'
 import { Route as PolicyRouteImport } from './routes/policy'
 import { Route as PapersRouteImport } from './routes/papers'
 import { Route as MediaRouteImport } from './routes/media'
@@ -27,11 +28,18 @@ import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAdminSubscribersRouteImport } from './routes/_authenticated/admin.subscribers'
 import { Route as AuthenticatedAdminPublicationsRouteImport } from './routes/_authenticated/admin.publications'
 import { Route as AuthenticatedAdminInquiriesRouteImport } from './routes/_authenticated/admin.inquiries'
+import { Route as AuthenticatedAdminQuotesIndexRouteImport } from './routes/_authenticated/admin.quotes.index'
+import { Route as AuthenticatedAdminQuotesIdRouteImport } from './routes/_authenticated/admin.quotes.$id'
 import { Route as AuthenticatedAdminEditorIdRouteImport } from './routes/_authenticated/admin.editor.$id'
 
 const SpeechesRoute = SpeechesRouteImport.update({
   id: '/speeches',
   path: '/speeches',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuotesRoute = QuotesRouteImport.update({
+  id: '/quotes',
+  path: '/quotes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PolicyRoute = PolicyRouteImport.update({
@@ -121,6 +129,18 @@ const AuthenticatedAdminInquiriesRoute =
     path: '/inquiries',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminQuotesIndexRoute =
+  AuthenticatedAdminQuotesIndexRouteImport.update({
+    id: '/quotes/',
+    path: '/quotes/',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminQuotesIdRoute =
+  AuthenticatedAdminQuotesIdRouteImport.update({
+    id: '/quotes/$id',
+    path: '/quotes/$id',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminEditorIdRoute =
   AuthenticatedAdminEditorIdRouteImport.update({
     id: '/editor/$id',
@@ -136,6 +156,7 @@ export interface FileRoutesByFullPath {
   '/media': typeof MediaRoute
   '/papers': typeof PapersRoute
   '/policy': typeof PolicyRoute
+  '/quotes': typeof QuotesRoute
   '/speeches': typeof SpeechesRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
@@ -147,6 +168,8 @@ export interface FileRoutesByFullPath {
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/admin/editor/$id': typeof AuthenticatedAdminEditorIdRoute
+  '/admin/quotes/$id': typeof AuthenticatedAdminQuotesIdRoute
+  '/admin/quotes/': typeof AuthenticatedAdminQuotesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -156,6 +179,7 @@ export interface FileRoutesByTo {
   '/media': typeof MediaRoute
   '/papers': typeof PapersRoute
   '/policy': typeof PolicyRoute
+  '/quotes': typeof QuotesRoute
   '/speeches': typeof SpeechesRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/register': typeof AdminRegisterRoute
@@ -166,6 +190,8 @@ export interface FileRoutesByTo {
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/admin/editor/$id': typeof AuthenticatedAdminEditorIdRoute
+  '/admin/quotes/$id': typeof AuthenticatedAdminQuotesIdRoute
+  '/admin/quotes': typeof AuthenticatedAdminQuotesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -177,6 +203,7 @@ export interface FileRoutesById {
   '/media': typeof MediaRoute
   '/papers': typeof PapersRoute
   '/policy': typeof PolicyRoute
+  '/quotes': typeof QuotesRoute
   '/speeches': typeof SpeechesRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
@@ -188,6 +215,8 @@ export interface FileRoutesById {
   '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/admin/editor/$id': typeof AuthenticatedAdminEditorIdRoute
+  '/_authenticated/admin/quotes/$id': typeof AuthenticatedAdminQuotesIdRoute
+  '/_authenticated/admin/quotes/': typeof AuthenticatedAdminQuotesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -199,6 +228,7 @@ export interface FileRouteTypes {
     | '/media'
     | '/papers'
     | '/policy'
+    | '/quotes'
     | '/speeches'
     | '/admin'
     | '/admin/login'
@@ -210,6 +240,8 @@ export interface FileRouteTypes {
     | '/admin/users'
     | '/admin/'
     | '/admin/editor/$id'
+    | '/admin/quotes/$id'
+    | '/admin/quotes/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -219,6 +251,7 @@ export interface FileRouteTypes {
     | '/media'
     | '/papers'
     | '/policy'
+    | '/quotes'
     | '/speeches'
     | '/admin/login'
     | '/admin/register'
@@ -229,6 +262,8 @@ export interface FileRouteTypes {
     | '/admin/users'
     | '/admin'
     | '/admin/editor/$id'
+    | '/admin/quotes/$id'
+    | '/admin/quotes'
   id:
     | '__root__'
     | '/'
@@ -239,6 +274,7 @@ export interface FileRouteTypes {
     | '/media'
     | '/papers'
     | '/policy'
+    | '/quotes'
     | '/speeches'
     | '/_authenticated/admin'
     | '/admin/login'
@@ -250,6 +286,8 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/users'
     | '/_authenticated/admin/'
     | '/_authenticated/admin/editor/$id'
+    | '/_authenticated/admin/quotes/$id'
+    | '/_authenticated/admin/quotes/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -261,6 +299,7 @@ export interface RootRouteChildren {
   MediaRoute: typeof MediaRoute
   PapersRoute: typeof PapersRoute
   PolicyRoute: typeof PolicyRoute
+  QuotesRoute: typeof QuotesRoute
   SpeechesRoute: typeof SpeechesRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminRegisterRoute: typeof AdminRegisterRoute
@@ -274,6 +313,13 @@ declare module '@tanstack/react-router' {
       path: '/speeches'
       fullPath: '/speeches'
       preLoaderRoute: typeof SpeechesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/quotes': {
+      id: '/quotes'
+      path: '/quotes'
+      fullPath: '/quotes'
+      preLoaderRoute: typeof QuotesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/policy': {
@@ -395,6 +441,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminInquiriesRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/quotes/': {
+      id: '/_authenticated/admin/quotes/'
+      path: '/quotes'
+      fullPath: '/admin/quotes/'
+      preLoaderRoute: typeof AuthenticatedAdminQuotesIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/quotes/$id': {
+      id: '/_authenticated/admin/quotes/$id'
+      path: '/quotes/$id'
+      fullPath: '/admin/quotes/$id'
+      preLoaderRoute: typeof AuthenticatedAdminQuotesIdRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/editor/$id': {
       id: '/_authenticated/admin/editor/$id'
       path: '/editor/$id'
@@ -412,6 +472,8 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
   AuthenticatedAdminEditorIdRoute: typeof AuthenticatedAdminEditorIdRoute
+  AuthenticatedAdminQuotesIdRoute: typeof AuthenticatedAdminQuotesIdRoute
+  AuthenticatedAdminQuotesIndexRoute: typeof AuthenticatedAdminQuotesIndexRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
@@ -421,6 +483,8 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
   AuthenticatedAdminEditorIdRoute: AuthenticatedAdminEditorIdRoute,
+  AuthenticatedAdminQuotesIdRoute: AuthenticatedAdminQuotesIdRoute,
+  AuthenticatedAdminQuotesIndexRoute: AuthenticatedAdminQuotesIndexRoute,
 }
 
 const AuthenticatedAdminRouteWithChildren =
@@ -446,6 +510,7 @@ const rootRouteChildren: RootRouteChildren = {
   MediaRoute: MediaRoute,
   PapersRoute: PapersRoute,
   PolicyRoute: PolicyRoute,
+  QuotesRoute: QuotesRoute,
   SpeechesRoute: SpeechesRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminRegisterRoute: AdminRegisterRoute,

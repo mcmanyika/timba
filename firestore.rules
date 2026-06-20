@@ -72,6 +72,11 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
+    match /quotes/{quoteId} {
+      allow read: if resource.data.published == true || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
     match /inquiries/{inquiryId} {
       allow create: if request.resource.data.keys().hasOnly([
           'name', 'email', 'message', 'inquiry_type', 'organization', 'phone',

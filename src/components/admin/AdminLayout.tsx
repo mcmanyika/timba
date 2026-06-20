@@ -10,6 +10,7 @@ const adminRoute = getRouteApi("/_authenticated/admin");
 const NAV = [
   { to: "/admin", label: "Dashboard", exact: true },
   { to: "/admin/publications", label: "Publications" },
+  { to: "/admin/quotes", label: "Quotes", adminOnly: true },
   { to: "/admin/subscribers", label: "Subscribers" },
   { to: "/admin/inquiries", label: "Inquiries", adminOnly: true },
   { to: "/admin/users", label: "Users", adminOnly: true },
@@ -100,6 +101,11 @@ export function AdminShell({ children }: { children: ReactNode }) {
             <Link to="/admin/subscribers" className="text-text-secondary">
               Subscribers
             </Link>
+            {isAdmin && (
+              <Link to="/admin/quotes" className="text-text-secondary">
+                Quotes
+              </Link>
+            )}
             {isAdmin && (
               <Link to="/admin/inquiries" className="text-text-secondary">
                 Inquiries
