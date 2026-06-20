@@ -71,5 +71,32 @@ service cloud.firestore {
       allow create, update: if isAdmin() && validUserRolesWrite();
       allow delete: if isAdmin();
     }
+
+    match /inquiries/{inquiryId} {
+      allow create: if request.resource.data.keys().hasOnly([
+          'name', 'email', 'message', 'inquiry_type', 'organization', 'phone',
+          'source_page', 'conversation_id', 'summary', 'status', 'created_at'
+        ])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 100
+        && request.resource.data.email is string
+        && request.resource.data.email.size() <= 255
+        && request.resource.data.message is string
+        && request.resource.data.message.size() > 0
+        && request.resource.data.message.size() <= 5000
+        && request.resource.data.inquiry_type in [
+          'general', 'media', 'speaking', 'policy', 'subscription', 'other'
+        ]
+        && request.resource.data.status == 'new'
+        && (request.resource.data.organization == null || request.resource.data.organization is string)
+        && (request.resource.data.phone == null || request.resource.data.phone is string)
+        && (request.resource.data.source_page == null || request.resource.data.source_page is string)
+        && (request.resource.data.conversation_id == null || request.resource.data.conversation_id is string)
+        && (request.resource.data.summary == null || request.resource.data.summary is string)
+        && request.resource.data.created_at == request.time;
+      allow read, update: if isAdmin();
+      allow delete: if false;
+    }
   }
 }

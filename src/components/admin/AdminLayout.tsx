@@ -11,6 +11,7 @@ const NAV = [
   { to: "/admin", label: "Dashboard", exact: true },
   { to: "/admin/publications", label: "Publications" },
   { to: "/admin/subscribers", label: "Subscribers" },
+  { to: "/admin/inquiries", label: "Inquiries", adminOnly: true },
   { to: "/admin/users", label: "Users", adminOnly: true },
 ] as const;
 
@@ -99,6 +100,11 @@ export function AdminShell({ children }: { children: ReactNode }) {
             <Link to="/admin/subscribers" className="text-text-secondary">
               Subscribers
             </Link>
+            {isAdmin && (
+              <Link to="/admin/inquiries" className="text-text-secondary">
+                Inquiries
+              </Link>
+            )}
             {isAdmin && (
               <Link to="/admin/users" className="text-text-secondary">
                 Users

@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { ChatWidget } from "@/components/ChatWidget";
 
 const NAV = [
   { to: "/papers", label: "The Papers" },
@@ -20,6 +21,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
       <SiteHeader />
       <main className="flex-1">{children}</main>
       <SiteFooter />
+      <ChatWidget />
     </div>
   );
 }
