@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { PublicationBody } from "@/components/PublicationBody";
 import { ArticleComments } from "@/components/ArticleComments";
 import { ArticleLikeButton } from "@/components/ArticleLikeButton";
+import { ArticleWhatsAppShare } from "@/components/ArticleWhatsAppShare";
 import { SiteShell } from "@/components/SiteShell";
 import { SubscribeBlock } from "@/components/SubscribeBlock";
 import { CATEGORY_LABELS, TYPE_LABELS, formatDate } from "@/lib/categories";
@@ -100,7 +101,10 @@ function Detail() {
           </div>
         )}
 
-        <ArticleLikeButton publicationId={data.id} />
+        <div className="mt-10 flex flex-wrap items-center gap-4">
+          <ArticleLikeButton publicationId={data.id} />
+          <ArticleWhatsAppShare title={data.title} slug={data.slug} />
+        </div>
 
         <ArticleComments
           publicationId={data.id}

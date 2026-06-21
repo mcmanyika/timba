@@ -40,7 +40,7 @@ export function ArticleLikeButton({ publicationId }: { publicationId: string }) 
   const busy = isLoading || like.isPending;
 
   return (
-    <div className="mt-10 flex items-center gap-4">
+    <div className="flex flex-wrap items-center gap-4">
       <button
         type="button"
         onClick={() => like.mutate()}
