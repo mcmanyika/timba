@@ -10,25 +10,20 @@ export const Route = createFileRoute("/_authenticated/admin")({
     const user = context.user;
     if (!user) throw redirect({ to: "/admin/login" });
 
+    await user.getIdToken(true);
+
     try {
       await ensureUserProfile(user);
     } catch (error) {
       console.error("[admin] user profile sync failed:", error);
     }
 
-    let access = { editorAccess: false, isAdmin: false, userEmail: user.email ?? "" };
-    try {
-      const roles = await getUserAccess(user.uid);
-      access = {
-        editorAccess: roles.editorAccess,
-        isAdmin: roles.isAdmin,
-        userEmail: user.email ?? "",
-      };
-    } catch (error) {
-      console.error("[admin] role check failed:", error);
-    }
-
-    return access;
+    const roles = await getUserAccess(user.uid);
+    return {
+      editorAccess: roles.editorAccess,
+      isAdmin: roles.isAdmin,
+      userEmail: user.email ?? "",
+    };
   },
   component: AdminRoute,
 });

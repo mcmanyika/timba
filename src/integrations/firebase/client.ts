@@ -1,6 +1,6 @@
 import { getApp, getApps, initializeApp, type FirebaseApp } from "firebase/app";
 import { getAuth, type Auth } from "firebase/auth";
-import { getFirestore, type Firestore } from "firebase/firestore";
+import { getFirestore, terminate, type Firestore } from "firebase/firestore";
 
 function getFirebaseConfig() {
   const config = {
@@ -51,6 +51,17 @@ export function getFirebaseAuth(): Auth {
 export function getFirebaseDb(): Firestore {
   if (!_db) _db = getFirestore(getFirebaseApp());
   return _db;
+}
+
+/** Tear down Firestore listeners between auth sessions to avoid SDK sync errors. */
+export async function resetFirebaseDb(): Promise<void> {
+  if (!_db) return;
+  try {
+    await terminate(_db);
+  } catch {
+    // Already terminated or never started.
+  }
+  _db = undefined;
 }
 
 function bindProxy<T extends object>(getTarget: () => T): T {

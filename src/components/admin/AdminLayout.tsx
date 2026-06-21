@@ -10,6 +10,7 @@ const adminRoute = getRouteApi("/_authenticated/admin");
 const NAV = [
   { to: "/admin", label: "Dashboard", exact: true },
   { to: "/admin/publications", label: "Publications" },
+  { to: "/admin/comments", label: "Comments" },
   { to: "/admin/quotes", label: "Quotes", adminOnly: true },
   { to: "/admin/subscribers", label: "Subscribers" },
   { to: "/admin/inquiries", label: "Inquiries", adminOnly: true },
@@ -97,6 +98,9 @@ export function AdminShell({ children }: { children: ReactNode }) {
             <ThemeToggle className="size-8" />
             <Link to="/admin/publications" className="text-text-secondary">
               Publications
+            </Link>
+            <Link to="/admin/comments" className="text-text-secondary">
+              Comments
             </Link>
             <Link to="/admin/subscribers" className="text-text-secondary">
               Subscribers

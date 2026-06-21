@@ -14,6 +14,7 @@ import { Route as QuotesRouteImport } from './routes/quotes'
 import { Route as PolicyRouteImport } from './routes/policy'
 import { Route as PapersRouteImport } from './routes/papers'
 import { Route as MediaRouteImport } from './routes/media'
+import { Route as CommentsRouteImport } from './routes/comments'
 import { Route as BooksRouteImport } from './routes/books'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
@@ -28,6 +29,7 @@ import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAdminSubscribersRouteImport } from './routes/_authenticated/admin.subscribers'
 import { Route as AuthenticatedAdminPublicationsRouteImport } from './routes/_authenticated/admin.publications'
 import { Route as AuthenticatedAdminInquiriesRouteImport } from './routes/_authenticated/admin.inquiries'
+import { Route as AuthenticatedAdminCommentsRouteImport } from './routes/_authenticated/admin.comments'
 import { Route as AuthenticatedAdminQuotesIndexRouteImport } from './routes/_authenticated/admin.quotes.index'
 import { Route as AuthenticatedAdminQuotesIdRouteImport } from './routes/_authenticated/admin.quotes.$id'
 import { Route as AuthenticatedAdminEditorIdRouteImport } from './routes/_authenticated/admin.editor.$id'
@@ -55,6 +57,11 @@ const PapersRoute = PapersRouteImport.update({
 const MediaRoute = MediaRouteImport.update({
   id: '/media',
   path: '/media',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommentsRoute = CommentsRouteImport.update({
+  id: '/comments',
+  path: '/comments',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BooksRoute = BooksRouteImport.update({
@@ -129,6 +136,12 @@ const AuthenticatedAdminInquiriesRoute =
     path: '/inquiries',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminCommentsRoute =
+  AuthenticatedAdminCommentsRouteImport.update({
+    id: '/comments',
+    path: '/comments',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminQuotesIndexRoute =
   AuthenticatedAdminQuotesIndexRouteImport.update({
     id: '/quotes/',
@@ -153,6 +166,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/books': typeof BooksRoute
+  '/comments': typeof CommentsRoute
   '/media': typeof MediaRoute
   '/papers': typeof PapersRoute
   '/policy': typeof PolicyRoute
@@ -162,6 +176,7 @@ export interface FileRoutesByFullPath {
   '/admin/login': typeof AdminLoginRoute
   '/admin/register': typeof AdminRegisterRoute
   '/p/$slug': typeof PSlugRoute
+  '/admin/comments': typeof AuthenticatedAdminCommentsRoute
   '/admin/inquiries': typeof AuthenticatedAdminInquiriesRoute
   '/admin/publications': typeof AuthenticatedAdminPublicationsRoute
   '/admin/subscribers': typeof AuthenticatedAdminSubscribersRoute
@@ -176,6 +191,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/books': typeof BooksRoute
+  '/comments': typeof CommentsRoute
   '/media': typeof MediaRoute
   '/papers': typeof PapersRoute
   '/policy': typeof PolicyRoute
@@ -184,6 +200,7 @@ export interface FileRoutesByTo {
   '/admin/login': typeof AdminLoginRoute
   '/admin/register': typeof AdminRegisterRoute
   '/p/$slug': typeof PSlugRoute
+  '/admin/comments': typeof AuthenticatedAdminCommentsRoute
   '/admin/inquiries': typeof AuthenticatedAdminInquiriesRoute
   '/admin/publications': typeof AuthenticatedAdminPublicationsRoute
   '/admin/subscribers': typeof AuthenticatedAdminSubscribersRoute
@@ -200,6 +217,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/books': typeof BooksRoute
+  '/comments': typeof CommentsRoute
   '/media': typeof MediaRoute
   '/papers': typeof PapersRoute
   '/policy': typeof PolicyRoute
@@ -209,6 +227,7 @@ export interface FileRoutesById {
   '/admin/login': typeof AdminLoginRoute
   '/admin/register': typeof AdminRegisterRoute
   '/p/$slug': typeof PSlugRoute
+  '/_authenticated/admin/comments': typeof AuthenticatedAdminCommentsRoute
   '/_authenticated/admin/inquiries': typeof AuthenticatedAdminInquiriesRoute
   '/_authenticated/admin/publications': typeof AuthenticatedAdminPublicationsRoute
   '/_authenticated/admin/subscribers': typeof AuthenticatedAdminSubscribersRoute
@@ -225,6 +244,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/books'
+    | '/comments'
     | '/media'
     | '/papers'
     | '/policy'
@@ -234,6 +254,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/register'
     | '/p/$slug'
+    | '/admin/comments'
     | '/admin/inquiries'
     | '/admin/publications'
     | '/admin/subscribers'
@@ -248,6 +269,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/books'
+    | '/comments'
     | '/media'
     | '/papers'
     | '/policy'
@@ -256,6 +278,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/register'
     | '/p/$slug'
+    | '/admin/comments'
     | '/admin/inquiries'
     | '/admin/publications'
     | '/admin/subscribers'
@@ -271,6 +294,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/books'
+    | '/comments'
     | '/media'
     | '/papers'
     | '/policy'
@@ -280,6 +304,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/register'
     | '/p/$slug'
+    | '/_authenticated/admin/comments'
     | '/_authenticated/admin/inquiries'
     | '/_authenticated/admin/publications'
     | '/_authenticated/admin/subscribers'
@@ -296,6 +321,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRoute
   BooksRoute: typeof BooksRoute
+  CommentsRoute: typeof CommentsRoute
   MediaRoute: typeof MediaRoute
   PapersRoute: typeof PapersRoute
   PolicyRoute: typeof PolicyRoute
@@ -341,6 +367,13 @@ declare module '@tanstack/react-router' {
       path: '/media'
       fullPath: '/media'
       preLoaderRoute: typeof MediaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/comments': {
+      id: '/comments'
+      path: '/comments'
+      fullPath: '/comments'
+      preLoaderRoute: typeof CommentsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/books': {
@@ -441,6 +474,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminInquiriesRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/comments': {
+      id: '/_authenticated/admin/comments'
+      path: '/comments'
+      fullPath: '/admin/comments'
+      preLoaderRoute: typeof AuthenticatedAdminCommentsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/quotes/': {
       id: '/_authenticated/admin/quotes/'
       path: '/quotes'
@@ -466,6 +506,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminCommentsRoute: typeof AuthenticatedAdminCommentsRoute
   AuthenticatedAdminInquiriesRoute: typeof AuthenticatedAdminInquiriesRoute
   AuthenticatedAdminPublicationsRoute: typeof AuthenticatedAdminPublicationsRoute
   AuthenticatedAdminSubscribersRoute: typeof AuthenticatedAdminSubscribersRoute
@@ -477,6 +518,7 @@ interface AuthenticatedAdminRouteChildren {
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminCommentsRoute: AuthenticatedAdminCommentsRoute,
   AuthenticatedAdminInquiriesRoute: AuthenticatedAdminInquiriesRoute,
   AuthenticatedAdminPublicationsRoute: AuthenticatedAdminPublicationsRoute,
   AuthenticatedAdminSubscribersRoute: AuthenticatedAdminSubscribersRoute,
@@ -507,6 +549,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AuthRoute: AuthRoute,
   BooksRoute: BooksRoute,
+  CommentsRoute: CommentsRoute,
   MediaRoute: MediaRoute,
   PapersRoute: PapersRoute,
   PolicyRoute: PolicyRoute,

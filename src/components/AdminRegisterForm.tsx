@@ -1,12 +1,19 @@
-import { Link, useNavigate, useRouter } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 
 import { AdminAuthShell, adminInputCls, adminSubmitCls } from "@/components/AdminAuthShell";
 import { signUp } from "@/lib/firebase/auth";
 
+function authErrorMessage(error: unknown): string {
+  if (!(error instanceof Error)) return "Registration failed";
+  if (error.message.includes("INTERNAL ASSERTION FAILED")) {
+    return "Connection error — please try again.";
+  }
+  return error.message;
+}
+
 export function AdminRegisterForm() {
   const nav = useNavigate();
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -29,10 +36,9 @@ export function AdminRegisterForm() {
     setLoading(true);
     try {
       await signUp(email, password);
-      await router.invalidate();
       await nav({ to: "/admin", replace: true });
     } catch (error) {
-      setErr(error instanceof Error ? error.message : "Registration failed");
+      setErr(authErrorMessage(error));
     } finally {
       setLoading(false);
     }

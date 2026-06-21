@@ -1,12 +1,19 @@
-import { Link, useNavigate, useRouter } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 
 import { AdminAuthShell, adminInputCls, adminSubmitCls } from "@/components/AdminAuthShell";
 import { signIn } from "@/lib/firebase/auth";
 
+function authErrorMessage(error: unknown): string {
+  if (!(error instanceof Error)) return "Authentication failed";
+  if (error.message.includes("INTERNAL ASSERTION FAILED")) {
+    return "Connection error — please try signing in again.";
+  }
+  return error.message;
+}
+
 export function AdminLoginForm() {
   const nav = useNavigate();
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState<string | null>(null);
@@ -18,10 +25,9 @@ export function AdminLoginForm() {
     setErr(null);
     try {
       await signIn(email, password);
-      await router.invalidate();
       await nav({ to: "/admin", replace: true });
     } catch (error) {
-      setErr(error instanceof Error ? error.message : "Authentication failed");
+      setErr(authErrorMessage(error));
     } finally {
       setLoading(false);
     }
