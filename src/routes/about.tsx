@@ -44,10 +44,6 @@ function About() {
             disciplined constitutionalism, a confident African position in a
             multipolar world, and a politics that takes the long view.
           </p>
-          <p>
-            He is the author of <em>Guest of the State</em> and{" "}
-            <em>Courage Is the Root of Change</em>.
-          </p>
         </div>
         <div className="mt-16">
           <SubscribeBlock />
