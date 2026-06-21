@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 
 import { AdminPageHeader } from "@/components/admin/AdminLayout";
+import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
 import { TYPE_LABELS, CATEGORY_LABELS, formatDate, type Publication } from "@/lib/categories";
 import {
   deletePublication,
@@ -15,6 +17,9 @@ export const Route = createFileRoute("/_authenticated/admin/publications")({
 });
 
 function Publications() {
+  const [deleteTarget, setDeleteTarget] = useState<Publication | null>(null);
+  const [deleting, setDeleting] = useState(false);
+
   const { data: pubs, refetch } = useQuery({
     queryKey: ["admin-pubs"],
     queryFn: listAllPublications,
@@ -29,10 +34,16 @@ function Publications() {
     await setFeaturedPublication(p.id);
     refetch();
   }
-  async function remove(p: Publication) {
-    if (!confirm(`Delete "${p.title}"?`)) return;
-    await deletePublication(p.id);
-    refetch();
+  async function confirmDelete() {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    try {
+      await deletePublication(deleteTarget.id);
+      setDeleteTarget(null);
+      refetch();
+    } finally {
+      setDeleting(false);
+    }
   }
 
   return (
@@ -102,7 +113,7 @@ function Publications() {
                 >
                   Feature
                 </button>
-                <button onClick={() => remove(p)} className="text-destructive">
+                <button onClick={() => setDeleteTarget(p)} className="text-destructive">
                   Delete
                 </button>
               </td>
@@ -110,6 +121,21 @@ function Publications() {
           ))}
         </tbody>
       </table>
+
+      <ConfirmDialog
+        open={deleteTarget !== null}
+        onOpenChange={(open) => !open && !deleting && setDeleteTarget(null)}
+        title="Delete publication?"
+        description={
+          deleteTarget
+            ? `This will permanently remove “${deleteTarget.title}”. This cannot be undone.`
+            : "This will permanently remove this publication. This cannot be undone."
+        }
+        confirmLabel={deleting ? "Deleting" : "Delete"}
+        destructive
+        loading={deleting}
+        onConfirm={confirmDelete}
+      />
     </>
   );
 }

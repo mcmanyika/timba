@@ -1,7 +1,9 @@
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 
 import { AdminPageHeader } from "@/components/admin/AdminLayout";
+import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
 import { PUBLIC_QUOTES_QUERY_KEY } from "@/lib/api/quotes.functions";
 import { deleteQuote, listAllQuotes, setQuotePublished } from "@/lib/firebase/quotes";
 
@@ -14,6 +16,9 @@ export const Route = createFileRoute("/_authenticated/admin/quotes/")({
 
 function AdminQuotes() {
   const qc = useQueryClient();
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; preview: string } | null>(null);
+  const [deleting, setDeleting] = useState(false);
+
   const { data, refetch } = useQuery({
     queryKey: ["admin-quotes"],
     queryFn: listAllQuotes,
@@ -29,12 +34,17 @@ function AdminQuotes() {
     refetch();
   }
 
-  async function remove(id: string, text: string) {
-    const preview = text.length > 60 ? `${text.slice(0, 60)}…` : text;
-    if (!confirm(`Delete quote “${preview}”?`)) return;
-    await deleteQuote(id);
-    await invalidatePublicQuotes();
-    refetch();
+  async function confirmDelete() {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    try {
+      await deleteQuote(deleteTarget.id);
+      await invalidatePublicQuotes();
+      setDeleteTarget(null);
+      refetch();
+    } finally {
+      setDeleting(false);
+    }
   }
 
   return (
@@ -88,7 +98,12 @@ function AdminQuotes() {
                   {q.published ? "Unpublish" : "Publish"}
                 </button>
                 <button
-                  onClick={() => remove(q.id, q.text)}
+                  onClick={() =>
+                    setDeleteTarget({
+                      id: q.id,
+                      preview: q.text.length > 60 ? `${q.text.slice(0, 60)}…` : q.text,
+                    })
+                  }
                   className="text-destructive"
                 >
                   Delete
@@ -102,6 +117,21 @@ function AdminQuotes() {
       {(data?.length ?? 0) === 0 && (
         <p className="text-text-secondary text-sm mt-6">No quotes yet.</p>
       )}
+
+      <ConfirmDialog
+        open={deleteTarget !== null}
+        onOpenChange={(open) => !open && !deleting && setDeleteTarget(null)}
+        title="Delete quote?"
+        description={
+          deleteTarget
+            ? `This will permanently remove “${deleteTarget.preview}”. This cannot be undone.`
+            : "This will permanently remove this quote. This cannot be undone."
+        }
+        confirmLabel={deleting ? "Deleting" : "Delete"}
+        destructive
+        loading={deleting}
+        onConfirm={confirmDelete}
+      />
     </>
   );
 }

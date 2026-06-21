@@ -2,6 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { PublicationBody } from "@/components/PublicationBody";
 import { ArticleComments } from "@/components/ArticleComments";
+import { ArticleLikeButton } from "@/components/ArticleLikeButton";
 import { SiteShell } from "@/components/SiteShell";
 import { SubscribeBlock } from "@/components/SubscribeBlock";
 import { CATEGORY_LABELS, TYPE_LABELS, formatDate } from "@/lib/categories";
@@ -98,6 +99,8 @@ function Detail() {
             </a>
           </div>
         )}
+
+        <ArticleLikeButton publicationId={data.id} />
 
         <ArticleComments
           publicationId={data.id}

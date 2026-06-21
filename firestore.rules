@@ -104,6 +104,28 @@ service cloud.firestore {
       allow update, delete: if isAdminOrEditor();
     }
 
+    match /publicationLikeCounts/{publicationId} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasOnly(['count'])
+        && request.resource.data.count == 1;
+      allow update: if request.resource.data.keys().hasOnly(['count'])
+        && request.resource.data.count == resource.data.count + 1;
+      allow delete: if false;
+    }
+
+    match /publicationLikeVotes/{voteId} {
+      allow read: if false;
+      allow create: if !exists(/databases/$(database)/documents/publicationLikeVotes/$(voteId))
+        && request.resource.data.keys().hasOnly(['publication_id', 'visitor_id', 'created_at'])
+        && request.resource.data.publication_id is string
+        && request.resource.data.publication_id.size() > 0
+        && request.resource.data.visitor_id is string
+        && request.resource.data.visitor_id.size() > 0
+        && voteId == request.resource.data.publication_id + '_' + request.resource.data.visitor_id
+        && request.resource.data.created_at == request.time;
+      allow update, delete: if false;
+    }
+
     match /inquiries/{inquiryId} {
       allow create: if request.resource.data.keys().hasOnly([
           'name', 'email', 'message', 'inquiry_type', 'organization', 'phone',

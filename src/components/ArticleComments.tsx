@@ -4,10 +4,13 @@ import { z } from "zod";
 
 import { formatDate } from "@/lib/categories";
 import {
-  articleCommentsQueryKey,
-  fetchApprovedComments,
-} from "@/lib/api/comments.functions";
-import { submitComment } from "@/lib/firebase/comments";
+  listApprovedComments,
+  submitComment,
+} from "@/lib/firebase/comments";
+
+function articleCommentsQueryKey(publicationId: string) {
+  return ["comments", publicationId] as const;
+}
 
 const schema = z.object({
   author_name: z.string().trim().min(1, "Name required").max(100),
@@ -32,7 +35,7 @@ export function ArticleComments({
 
   const { data: comments, isLoading, isError } = useQuery({
     queryKey,
-    queryFn: () => fetchApprovedComments({ data: { publicationId } }),
+    queryFn: () => listApprovedComments(publicationId),
     retry: 1,
   });
 

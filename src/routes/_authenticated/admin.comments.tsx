@@ -3,16 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
 import { AdminPageHeader } from "@/components/admin/AdminLayout";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
 import { getFirebaseAuth } from "@/integrations/firebase/client";
 import {
   ADMIN_COMMENTS_QUERY_KEY,
@@ -219,33 +210,23 @@ function AdminComments() {
         </ul>
       )}
 
-      <AlertDialog open={deleteTarget !== null} onOpenChange={(open) => !open && setDeleteTarget(null)}>
-        <AlertDialogContent className="border-divider bg-background">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="font-serif text-xl">Delete comment?</AlertDialogTitle>
-            <AlertDialogDescription>
-              {deleteTarget
-                ? `This will permanently remove “${deleteTarget.preview}”. This cannot be undone.`
-                : "This will permanently remove this comment. This cannot be undone."}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter className="gap-2 sm:gap-0">
-            <AlertDialogCancel className="border-divider bg-surface hover:bg-surface/80">
-              Cancel
-            </AlertDialogCancel>
-            <AlertDialogAction
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-              disabled={mutate.isPending}
-              onClick={() => {
-                if (!deleteTarget) return;
-                mutate.mutate({ id: deleteTarget.id, action: "delete" });
-              }}
-            >
-              {mutate.isPending ? "Deleting…" : "Delete"}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <ConfirmDialog
+        open={deleteTarget !== null}
+        onOpenChange={(open) => !open && setDeleteTarget(null)}
+        title="Delete comment?"
+        description={
+          deleteTarget
+            ? `This will permanently remove “${deleteTarget.preview}”. This cannot be undone.`
+            : "This will permanently remove this comment. This cannot be undone."
+        }
+        confirmLabel={mutate.isPending ? "Deleting" : "Delete"}
+        destructive
+        loading={mutate.isPending}
+        onConfirm={() => {
+          if (!deleteTarget) return;
+          mutate.mutate({ id: deleteTarget.id, action: "delete" });
+        }}
+      />
     </>
   );
 }
