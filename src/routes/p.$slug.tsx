@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { PublicationBody } from "@/components/PublicationBody";
 import { ArticleComments } from "@/components/ArticleComments";
 import { ArticleLikeButton } from "@/components/ArticleLikeButton";
+import { ArticleReadPulse } from "@/components/ArticleReadPulse";
 import { ArticleShareButtons } from "@/components/ArticleShareButtons";
 import { SiteShell } from "@/components/SiteShell";
 import { SubscribeBlock } from "@/components/SubscribeBlock";
@@ -116,6 +117,11 @@ function Detail() {
           <SubscribeBlock />
         </div>
       </article>
+      <ArticleReadPulse
+        publicationId={data.id}
+        publicationSlug={data.slug}
+        publicationTitle={data.title}
+      />
     </SiteShell>
   );
 }

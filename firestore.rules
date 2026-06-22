@@ -126,6 +126,34 @@ service cloud.firestore {
       allow update, delete: if false;
     }
 
+    match /articlePulse/{pulseId} {
+      allow read: if isAdminOrEditor();
+      allow create: if !exists(/databases/$(database)/documents/articlePulse/$(pulseId))
+        && request.resource.data.keys().hasOnly([
+          'publication_id', 'publication_slug', 'publication_title',
+          'visitor_id', 'perspective_change', 'recommend', 'missing_note', 'created_at'
+        ])
+        && request.resource.data.publication_id is string
+        && request.resource.data.publication_id.size() > 0
+        && request.resource.data.publication_slug is string
+        && request.resource.data.publication_slug.size() > 0
+        && request.resource.data.publication_title is string
+        && request.resource.data.publication_title.size() > 0
+        && request.resource.data.publication_title.size() <= 300
+        && request.resource.data.visitor_id is string
+        && request.resource.data.visitor_id.size() > 0
+        && pulseId == request.resource.data.publication_id + '_' + request.resource.data.visitor_id
+        && request.resource.data.perspective_change in ['yes', 'somewhat', 'no']
+        && request.resource.data.recommend is number
+        && request.resource.data.recommend >= 1
+        && request.resource.data.recommend <= 5
+        && (request.resource.data.missing_note == null
+          || (request.resource.data.missing_note is string
+            && request.resource.data.missing_note.size() <= 500))
+        && request.resource.data.created_at == request.time;
+      allow update, delete: if false;
+    }
+
     match /inquiries/{inquiryId} {
       allow create: if request.resource.data.keys().hasOnly([
           'name', 'email', 'message', 'inquiry_type', 'organization', 'phone',

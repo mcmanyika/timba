@@ -27,6 +27,7 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin.users'
 import { Route as AuthenticatedAdminSubscribersRouteImport } from './routes/_authenticated/admin.subscribers'
+import { Route as AuthenticatedAdminPulseRouteImport } from './routes/_authenticated/admin.pulse'
 import { Route as AuthenticatedAdminPublicationsRouteImport } from './routes/_authenticated/admin.publications'
 import { Route as AuthenticatedAdminInquiriesRouteImport } from './routes/_authenticated/admin.inquiries'
 import { Route as AuthenticatedAdminCommentsRouteImport } from './routes/_authenticated/admin.comments'
@@ -124,6 +125,11 @@ const AuthenticatedAdminSubscribersRoute =
     path: '/subscribers',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminPulseRoute = AuthenticatedAdminPulseRouteImport.update({
+  id: '/pulse',
+  path: '/pulse',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
 const AuthenticatedAdminPublicationsRoute =
   AuthenticatedAdminPublicationsRouteImport.update({
     id: '/publications',
@@ -179,6 +185,7 @@ export interface FileRoutesByFullPath {
   '/admin/comments': typeof AuthenticatedAdminCommentsRoute
   '/admin/inquiries': typeof AuthenticatedAdminInquiriesRoute
   '/admin/publications': typeof AuthenticatedAdminPublicationsRoute
+  '/admin/pulse': typeof AuthenticatedAdminPulseRoute
   '/admin/subscribers': typeof AuthenticatedAdminSubscribersRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
@@ -203,6 +210,7 @@ export interface FileRoutesByTo {
   '/admin/comments': typeof AuthenticatedAdminCommentsRoute
   '/admin/inquiries': typeof AuthenticatedAdminInquiriesRoute
   '/admin/publications': typeof AuthenticatedAdminPublicationsRoute
+  '/admin/pulse': typeof AuthenticatedAdminPulseRoute
   '/admin/subscribers': typeof AuthenticatedAdminSubscribersRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
@@ -230,6 +238,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/comments': typeof AuthenticatedAdminCommentsRoute
   '/_authenticated/admin/inquiries': typeof AuthenticatedAdminInquiriesRoute
   '/_authenticated/admin/publications': typeof AuthenticatedAdminPublicationsRoute
+  '/_authenticated/admin/pulse': typeof AuthenticatedAdminPulseRoute
   '/_authenticated/admin/subscribers': typeof AuthenticatedAdminSubscribersRoute
   '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
@@ -257,6 +266,7 @@ export interface FileRouteTypes {
     | '/admin/comments'
     | '/admin/inquiries'
     | '/admin/publications'
+    | '/admin/pulse'
     | '/admin/subscribers'
     | '/admin/users'
     | '/admin/'
@@ -281,6 +291,7 @@ export interface FileRouteTypes {
     | '/admin/comments'
     | '/admin/inquiries'
     | '/admin/publications'
+    | '/admin/pulse'
     | '/admin/subscribers'
     | '/admin/users'
     | '/admin'
@@ -307,6 +318,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/comments'
     | '/_authenticated/admin/inquiries'
     | '/_authenticated/admin/publications'
+    | '/_authenticated/admin/pulse'
     | '/_authenticated/admin/subscribers'
     | '/_authenticated/admin/users'
     | '/_authenticated/admin/'
@@ -460,6 +472,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminSubscribersRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/pulse': {
+      id: '/_authenticated/admin/pulse'
+      path: '/pulse'
+      fullPath: '/admin/pulse'
+      preLoaderRoute: typeof AuthenticatedAdminPulseRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/publications': {
       id: '/_authenticated/admin/publications'
       path: '/publications'
@@ -509,6 +528,7 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminCommentsRoute: typeof AuthenticatedAdminCommentsRoute
   AuthenticatedAdminInquiriesRoute: typeof AuthenticatedAdminInquiriesRoute
   AuthenticatedAdminPublicationsRoute: typeof AuthenticatedAdminPublicationsRoute
+  AuthenticatedAdminPulseRoute: typeof AuthenticatedAdminPulseRoute
   AuthenticatedAdminSubscribersRoute: typeof AuthenticatedAdminSubscribersRoute
   AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
@@ -521,6 +541,7 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminCommentsRoute: AuthenticatedAdminCommentsRoute,
   AuthenticatedAdminInquiriesRoute: AuthenticatedAdminInquiriesRoute,
   AuthenticatedAdminPublicationsRoute: AuthenticatedAdminPublicationsRoute,
+  AuthenticatedAdminPulseRoute: AuthenticatedAdminPulseRoute,
   AuthenticatedAdminSubscribersRoute: AuthenticatedAdminSubscribersRoute,
   AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
