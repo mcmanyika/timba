@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { SiteShell } from "@/components/SiteShell";
 import { PublicationCard } from "@/components/PublicationCard";
+import { HomeVolumeParallax } from "@/components/HomeVolumeParallax";
 import { SubscribeBlock } from "@/components/SubscribeBlock";
 import { CATEGORY_LABELS, TYPE_LABELS, formatDate, type Publication } from "@/lib/categories";
 import { listPublishedPublications } from "@/lib/firebase/publications";
@@ -144,35 +145,7 @@ function Home() {
       </section>
 
       {/* Volume banner */}
-      <section className="bg-surface border-b border-divider">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-12 md:py-16 grid md:grid-cols-3 gap-8 items-start">
-          <HomeScrollReveal delay={0}>
-            <div className="pub-number">The Timba Papers</div>
-          </HomeScrollReveal>
-          <div className="md:col-span-2">
-            <HomeScrollReveal delay={100}>
-              <h2 className="font-serif text-3xl md:text-4xl leading-tight">
-                Volume I (2025–2026) — Democracy, Constitutionalism and the Future of Zimbabwe
-              </h2>
-            </HomeScrollReveal>
-            <HomeScrollReveal delay={180}>
-              <p className="mt-4 text-text-secondary leading-relaxed max-w-2xl">
-                A coherent body of essays, policy papers and speeches addressing the
-                architecture of legitimate authority, the political economy of patience,
-                and Africa's position in a multipolar world.
-              </p>
-            </HomeScrollReveal>
-            <HomeScrollReveal delay={260}>
-              <Link
-                to="/papers"
-                className="mt-6 inline-flex items-center gap-2 text-gold text-sm uppercase tracking-wider"
-              >
-                Browse the archive →
-              </Link>
-            </HomeScrollReveal>
-          </div>
-        </div>
-      </section>
+      <HomeVolumeParallax />
 
       {/* Intro */}
       <section className="max-w-7xl mx-auto px-6 lg:px-10 py-16 grid md:grid-cols-3 gap-10">

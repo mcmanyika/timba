@@ -316,5 +316,9 @@ html.dark {
       transform: none;
       transition: none;
     }
+
+    .will-change-transform {
+      transform: none !important;
+    }
   }
 }
