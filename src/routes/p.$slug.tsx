@@ -102,6 +102,12 @@ function Detail() {
           </div>
         )}
 
+        <ArticleReadPulse
+          publicationId={data.id}
+          publicationSlug={data.slug}
+          publicationTitle={data.title}
+        />
+
         <div className="mt-10 flex flex-wrap items-center gap-4">
           <ArticleLikeButton publicationId={data.id} />
           <ArticleShareButtons title={data.title} slug={data.slug} />
@@ -117,11 +123,6 @@ function Detail() {
           <SubscribeBlock />
         </div>
       </article>
-      <ArticleReadPulse
-        publicationId={data.id}
-        publicationSlug={data.slug}
-        publicationTitle={data.title}
-      />
     </SiteShell>
   );
 }
