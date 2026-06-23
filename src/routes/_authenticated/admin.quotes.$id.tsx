@@ -36,7 +36,7 @@ function QuoteEditor() {
   const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState({
     text: "",
-    attribution: "",
+    attribution: isNew ? "Jameson Timba" : "",
     source_url: "",
     published: false,
   });
