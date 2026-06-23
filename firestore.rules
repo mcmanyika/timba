@@ -126,6 +126,28 @@ service cloud.firestore {
       allow update, delete: if false;
     }
 
+    match /publicationViewCounts/{publicationId} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasOnly(['count'])
+        && request.resource.data.count == 1;
+      allow update: if request.resource.data.keys().hasOnly(['count'])
+        && request.resource.data.count == resource.data.count + 1;
+      allow delete: if false;
+    }
+
+    match /publicationViewSessions/{sessionId} {
+      allow read: if false;
+      allow create: if !exists(/databases/$(database)/documents/publicationViewSessions/$(sessionId))
+        && request.resource.data.keys().hasOnly(['publication_id', 'visitor_id', 'created_at'])
+        && request.resource.data.publication_id is string
+        && request.resource.data.publication_id.size() > 0
+        && request.resource.data.visitor_id is string
+        && request.resource.data.visitor_id.size() > 0
+        && sessionId == request.resource.data.publication_id + '_' + request.resource.data.visitor_id
+        && request.resource.data.created_at == request.time;
+      allow update, delete: if false;
+    }
+
     match /articlePulse/{pulseId} {
       allow read: if isAdminOrEditor();
       allow create: if !exists(/databases/$(database)/documents/articlePulse/$(pulseId))

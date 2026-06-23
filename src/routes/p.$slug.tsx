@@ -5,6 +5,7 @@ import { ArticleComments } from "@/components/ArticleComments";
 import { ArticleLikeButton } from "@/components/ArticleLikeButton";
 import { ArticleReadPulse } from "@/components/ArticleReadPulse";
 import { ArticleShareButtons } from "@/components/ArticleShareButtons";
+import { ArticleViewCount } from "@/components/ArticleViewCount";
 import { SiteShell } from "@/components/SiteShell";
 import { SubscribeBlock } from "@/components/SubscribeBlock";
 import { CATEGORY_LABELS, TYPE_LABELS, formatDate } from "@/lib/categories";
@@ -64,6 +65,8 @@ function Detail() {
           {data.category && <span>· {CATEGORY_LABELS[data.category]}</span>}
           <span>· {formatDate(data.publication_date)}</span>
           {data.location && <span>· {data.location}</span>}
+          <span>·</span>
+          <ArticleViewCount publicationId={data.id} />
         </div>
         <h1 className="mt-6 font-serif text-4xl md:text-6xl leading-[1.1] tracking-tight">
           {data.title}

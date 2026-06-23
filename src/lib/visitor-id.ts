@@ -52,3 +52,17 @@ export function markArticlePulseDismissed(publicationId: string): void {
   if (typeof window === "undefined") return;
   localStorage.setItem(pulseDismissedKey(publicationId), "1");
 }
+
+function viewRecordedKey(publicationId: string): string {
+  return `timba-view-recorded-${publicationId}`;
+}
+
+export function hasRecordedPublicationView(publicationId: string): boolean {
+  if (typeof window === "undefined") return false;
+  return sessionStorage.getItem(viewRecordedKey(publicationId)) === "1";
+}
+
+export function markPublicationViewRecorded(publicationId: string): void {
+  if (typeof window === "undefined") return;
+  sessionStorage.setItem(viewRecordedKey(publicationId), "1");
+}
