@@ -3,6 +3,11 @@ import { useState } from "react";
 import { z } from "zod";
 
 import { formatDate } from "@/lib/categories";
+import { CommentLikeButton } from "@/components/CommentLikeButton";
+import {
+  commentLikesQueryKey,
+  getCommentLikeCounts,
+} from "@/lib/firebase/comment-likes";
 import {
   listApprovedComments,
   submitComment,
@@ -37,6 +42,13 @@ export function ArticleComments({
     queryKey,
     queryFn: () => listApprovedComments(publicationId),
     retry: 1,
+  });
+
+  const commentIds = comments?.map((c) => c.id) ?? [];
+  const { data: likeCounts = {} } = useQuery({
+    queryKey: commentLikesQueryKey(publicationId),
+    queryFn: () => getCommentLikeCounts(commentIds),
+    enabled: commentIds.length > 0,
   });
 
   const [authorName, setAuthorName] = useState("");
@@ -107,6 +119,11 @@ export function ArticleComments({
                 )}
               </div>
               <p className="mt-2 text-foreground leading-relaxed whitespace-pre-wrap">{c.body}</p>
+              <CommentLikeButton
+                commentId={c.id}
+                publicationId={publicationId}
+                count={likeCounts[c.id] ?? 0}
+              />
             </li>
           ))}
         </ul>

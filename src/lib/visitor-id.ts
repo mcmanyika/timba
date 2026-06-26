@@ -66,3 +66,17 @@ export function markPublicationViewRecorded(publicationId: string): void {
   if (typeof window === "undefined") return;
   sessionStorage.setItem(viewRecordedKey(publicationId), "1");
 }
+
+function commentLikedKey(commentId: string): string {
+  return `timba-comment-liked-${commentId}`;
+}
+
+export function hasLikedComment(commentId: string): boolean {
+  if (typeof window === "undefined") return false;
+  return localStorage.getItem(commentLikedKey(commentId)) === "1";
+}
+
+export function markCommentLiked(commentId: string): void {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(commentLikedKey(commentId), "1");
+}
