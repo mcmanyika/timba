@@ -12,6 +12,7 @@ const NAV = [
   { to: "/admin/publications", label: "Publications" },
   { to: "/admin/comments", label: "Comments" },
   { to: "/admin/pulse", label: "Reader pulse" },
+  { to: "/admin/stats", label: "Stats" },
   { to: "/admin/quotes", label: "Quotes", adminOnly: true },
   { to: "/admin/subscribers", label: "Subscribers" },
   { to: "/admin/inquiries", label: "Inquiries", adminOnly: true },
@@ -105,6 +106,9 @@ export function AdminShell({ children }: { children: ReactNode }) {
             </Link>
             <Link to="/admin/pulse" className="text-text-secondary">
               Pulse
+            </Link>
+            <Link to="/admin/stats" className="text-text-secondary">
+              Stats
             </Link>
             <Link to="/admin/subscribers" className="text-text-secondary">
               Subscribers
