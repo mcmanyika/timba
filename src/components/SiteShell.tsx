@@ -132,7 +132,7 @@ function SiteFooter() {
         <p className="max-w-7xl mx-auto px-6 lg:px-10 py-4 text-xs text-text-secondary">
           Site developed by{" "}
           <a
-            href="https://ecards-two.vercel.app/"
+            href="https://partsonmanyika.com/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-foreground hover:text-gold transition-colors"
