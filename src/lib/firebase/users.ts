@@ -113,3 +113,12 @@ export async function setUserAccessLevel(userId: string, level: AccessLevel): Pr
     await setDoc(ref, { roles });
   }
 }
+
+/** Removes the Firestore profile and roles. Does not delete the Firebase Auth account. */
+export async function deleteAdminUser(userId: string): Promise<void> {
+  const db = getFirebaseDb();
+  await Promise.all([
+    deleteDoc(doc(db, "users", userId)).catch(() => undefined),
+    deleteDoc(doc(db, "userRoles", userId)).catch(() => undefined),
+  ]);
+}

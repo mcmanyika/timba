@@ -3,7 +3,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
 import { AdminPageHeader } from "@/components/admin/AdminLayout";
+import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
 import {
+  deleteAdminUser,
   listAdminUsers,
   setUserAccessLevel,
   type AccessLevel,
@@ -33,6 +35,9 @@ function AdminUsers() {
   const { userEmail } = adminRoute.useRouteContext();
   const qc = useQueryClient();
   const [error, setError] = useState<string | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; email: string } | null>(
+    null,
+  );
 
   const { data, isLoading } = useQuery({
     queryKey: ["admin-users"],
@@ -48,6 +53,18 @@ function AdminUsers() {
     },
     onError: (err) => {
       setError(err instanceof Error ? err.message : "Failed to update access");
+    },
+  });
+
+  const removeUser = useMutation({
+    mutationFn: (userId: string) => deleteAdminUser(userId),
+    onSuccess: () => {
+      setError(null);
+      setDeleteTarget(null);
+      qc.invalidateQueries({ queryKey: ["admin-users"] });
+    },
+    onError: (err) => {
+      setError(err instanceof Error ? err.message : "Failed to delete account");
     },
   });
 
@@ -77,7 +94,8 @@ function AdminUsers() {
             <tr>
               <th className="py-3 pr-4">Email</th>
               <th className="py-3 pr-4">Registered</th>
-              <th className="py-3">Access</th>
+              <th className="py-3 pr-4">Access</th>
+              <th className="py-3"> </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-divider">
@@ -97,10 +115,10 @@ function AdminUsers() {
                       ? new Date(row.created_at).toLocaleDateString()
                       : "—"}
                   </td>
-                  <td className="py-3">
+                  <td className="py-3 pr-4">
                     <select
                       value={row.accessLevel}
-                      disabled={updateAccess.isPending}
+                      disabled={updateAccess.isPending || removeUser.isPending}
                       onChange={(e) =>
                         onAccessChange(
                           row.id,
@@ -118,6 +136,18 @@ function AdminUsers() {
                       ))}
                     </select>
                   </td>
+                  <td className="py-3 text-right">
+                    {!isSelf && (
+                      <button
+                        type="button"
+                        onClick={() => setDeleteTarget({ id: row.id, email })}
+                        disabled={removeUser.isPending}
+                        className="text-xs text-destructive hover:underline disabled:opacity-60"
+                      >
+                        Delete
+                      </button>
+                    )}
+                  </td>
                 </tr>
               );
             })}
@@ -130,6 +160,25 @@ function AdminUsers() {
           No users yet. Accounts appear here after they register.
         </p>
       )}
+
+      <ConfirmDialog
+        open={Boolean(deleteTarget)}
+        onOpenChange={(open) => {
+          if (!open) setDeleteTarget(null);
+        }}
+        title="Delete account?"
+        description={
+          deleteTarget
+            ? `Remove ${deleteTarget.email} from the editorial desk. Their access will be revoked. They can register again later.`
+            : ""
+        }
+        confirmLabel="Delete"
+        destructive
+        loading={removeUser.isPending}
+        onConfirm={() => {
+          if (deleteTarget) removeUser.mutate(deleteTarget.id);
+        }}
+      />
     </>
   );
 }
