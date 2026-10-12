@@ -23,6 +23,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PSlugRouteImport } from './routes/p.$slug'
 import { Route as ApiPressStatementsRouteImport } from './routes/api.press-statements'
+import { Route as ApiPapersRouteImport } from './routes/api.papers'
 import { Route as AdminRegisterRouteImport } from './routes/admin.register'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
@@ -105,6 +106,11 @@ const PSlugRoute = PSlugRouteImport.update({
 const ApiPressStatementsRoute = ApiPressStatementsRouteImport.update({
   id: '/api/press-statements',
   path: '/api/press-statements',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPapersRoute = ApiPapersRouteImport.update({
+  id: '/api/papers',
+  path: '/api/papers',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRegisterRoute = AdminRegisterRouteImport.update({
@@ -200,6 +206,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/admin/register': typeof AdminRegisterRoute
+  '/api/papers': typeof ApiPapersRoute
   '/api/press-statements': typeof ApiPressStatementsRoute
   '/p/$slug': typeof PSlugRoute
   '/admin/comments': typeof AuthenticatedAdminCommentsRoute
@@ -228,6 +235,7 @@ export interface FileRoutesByTo {
   '/speeches': typeof SpeechesRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/register': typeof AdminRegisterRoute
+  '/api/papers': typeof ApiPapersRoute
   '/api/press-statements': typeof ApiPressStatementsRoute
   '/p/$slug': typeof PSlugRoute
   '/admin/comments': typeof AuthenticatedAdminCommentsRoute
@@ -259,6 +267,7 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/admin/register': typeof AdminRegisterRoute
+  '/api/papers': typeof ApiPapersRoute
   '/api/press-statements': typeof ApiPressStatementsRoute
   '/p/$slug': typeof PSlugRoute
   '/_authenticated/admin/comments': typeof AuthenticatedAdminCommentsRoute
@@ -290,6 +299,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/admin/login'
     | '/admin/register'
+    | '/api/papers'
     | '/api/press-statements'
     | '/p/$slug'
     | '/admin/comments'
@@ -318,6 +328,7 @@ export interface FileRouteTypes {
     | '/speeches'
     | '/admin/login'
     | '/admin/register'
+    | '/api/papers'
     | '/api/press-statements'
     | '/p/$slug'
     | '/admin/comments'
@@ -348,6 +359,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/admin/login'
     | '/admin/register'
+    | '/api/papers'
     | '/api/press-statements'
     | '/p/$slug'
     | '/_authenticated/admin/comments'
@@ -378,6 +390,7 @@ export interface RootRouteChildren {
   SpeechesRoute: typeof SpeechesRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminRegisterRoute: typeof AdminRegisterRoute
+  ApiPapersRoute: typeof ApiPapersRoute
   ApiPressStatementsRoute: typeof ApiPressStatementsRoute
   PSlugRoute: typeof PSlugRoute
 }
@@ -480,6 +493,13 @@ declare module '@tanstack/react-router' {
       path: '/api/press-statements'
       fullPath: '/api/press-statements'
       preLoaderRoute: typeof ApiPressStatementsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/papers': {
+      id: '/api/papers'
+      path: '/api/papers'
+      fullPath: '/api/papers'
+      preLoaderRoute: typeof ApiPapersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/register': {
@@ -640,6 +660,7 @@ const rootRouteChildren: RootRouteChildren = {
   SpeechesRoute: SpeechesRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminRegisterRoute: AdminRegisterRoute,
+  ApiPapersRoute: ApiPapersRoute,
   ApiPressStatementsRoute: ApiPressStatementsRoute,
   PSlugRoute: PSlugRoute,
 }
