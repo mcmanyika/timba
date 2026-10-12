@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SpeechesRouteImport } from './routes/speeches'
 import { Route as QuotesRouteImport } from './routes/quotes'
+import { Route as PressRouteImport } from './routes/press'
 import { Route as PolicyRouteImport } from './routes/policy'
 import { Route as PapersRouteImport } from './routes/papers'
 import { Route as MediaRouteImport } from './routes/media'
@@ -21,6 +22,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PSlugRouteImport } from './routes/p.$slug'
+import { Route as ApiPressStatementsRouteImport } from './routes/api.press-statements'
 import { Route as AdminRegisterRouteImport } from './routes/admin.register'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
@@ -44,6 +46,11 @@ const SpeechesRoute = SpeechesRouteImport.update({
 const QuotesRoute = QuotesRouteImport.update({
   id: '/quotes',
   path: '/quotes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PressRoute = PressRouteImport.update({
+  id: '/press',
+  path: '/press',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PolicyRoute = PolicyRouteImport.update({
@@ -93,6 +100,11 @@ const IndexRoute = IndexRouteImport.update({
 const PSlugRoute = PSlugRouteImport.update({
   id: '/p/$slug',
   path: '/p/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPressStatementsRoute = ApiPressStatementsRouteImport.update({
+  id: '/api/press-statements',
+  path: '/api/press-statements',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRegisterRoute = AdminRegisterRouteImport.update({
@@ -182,11 +194,13 @@ export interface FileRoutesByFullPath {
   '/media': typeof MediaRoute
   '/papers': typeof PapersRoute
   '/policy': typeof PolicyRoute
+  '/press': typeof PressRoute
   '/quotes': typeof QuotesRoute
   '/speeches': typeof SpeechesRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/admin/register': typeof AdminRegisterRoute
+  '/api/press-statements': typeof ApiPressStatementsRoute
   '/p/$slug': typeof PSlugRoute
   '/admin/comments': typeof AuthenticatedAdminCommentsRoute
   '/admin/inquiries': typeof AuthenticatedAdminInquiriesRoute
@@ -209,10 +223,12 @@ export interface FileRoutesByTo {
   '/media': typeof MediaRoute
   '/papers': typeof PapersRoute
   '/policy': typeof PolicyRoute
+  '/press': typeof PressRoute
   '/quotes': typeof QuotesRoute
   '/speeches': typeof SpeechesRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/register': typeof AdminRegisterRoute
+  '/api/press-statements': typeof ApiPressStatementsRoute
   '/p/$slug': typeof PSlugRoute
   '/admin/comments': typeof AuthenticatedAdminCommentsRoute
   '/admin/inquiries': typeof AuthenticatedAdminInquiriesRoute
@@ -237,11 +253,13 @@ export interface FileRoutesById {
   '/media': typeof MediaRoute
   '/papers': typeof PapersRoute
   '/policy': typeof PolicyRoute
+  '/press': typeof PressRoute
   '/quotes': typeof QuotesRoute
   '/speeches': typeof SpeechesRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/admin/register': typeof AdminRegisterRoute
+  '/api/press-statements': typeof ApiPressStatementsRoute
   '/p/$slug': typeof PSlugRoute
   '/_authenticated/admin/comments': typeof AuthenticatedAdminCommentsRoute
   '/_authenticated/admin/inquiries': typeof AuthenticatedAdminInquiriesRoute
@@ -266,11 +284,13 @@ export interface FileRouteTypes {
     | '/media'
     | '/papers'
     | '/policy'
+    | '/press'
     | '/quotes'
     | '/speeches'
     | '/admin'
     | '/admin/login'
     | '/admin/register'
+    | '/api/press-statements'
     | '/p/$slug'
     | '/admin/comments'
     | '/admin/inquiries'
@@ -293,10 +313,12 @@ export interface FileRouteTypes {
     | '/media'
     | '/papers'
     | '/policy'
+    | '/press'
     | '/quotes'
     | '/speeches'
     | '/admin/login'
     | '/admin/register'
+    | '/api/press-statements'
     | '/p/$slug'
     | '/admin/comments'
     | '/admin/inquiries'
@@ -320,11 +342,13 @@ export interface FileRouteTypes {
     | '/media'
     | '/papers'
     | '/policy'
+    | '/press'
     | '/quotes'
     | '/speeches'
     | '/_authenticated/admin'
     | '/admin/login'
     | '/admin/register'
+    | '/api/press-statements'
     | '/p/$slug'
     | '/_authenticated/admin/comments'
     | '/_authenticated/admin/inquiries'
@@ -349,10 +373,12 @@ export interface RootRouteChildren {
   MediaRoute: typeof MediaRoute
   PapersRoute: typeof PapersRoute
   PolicyRoute: typeof PolicyRoute
+  PressRoute: typeof PressRoute
   QuotesRoute: typeof QuotesRoute
   SpeechesRoute: typeof SpeechesRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminRegisterRoute: typeof AdminRegisterRoute
+  ApiPressStatementsRoute: typeof ApiPressStatementsRoute
   PSlugRoute: typeof PSlugRoute
 }
 
@@ -370,6 +396,13 @@ declare module '@tanstack/react-router' {
       path: '/quotes'
       fullPath: '/quotes'
       preLoaderRoute: typeof QuotesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/press': {
+      id: '/press'
+      path: '/press'
+      fullPath: '/press'
+      preLoaderRoute: typeof PressRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/policy': {
@@ -440,6 +473,13 @@ declare module '@tanstack/react-router' {
       path: '/p/$slug'
       fullPath: '/p/$slug'
       preLoaderRoute: typeof PSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/press-statements': {
+      id: '/api/press-statements'
+      path: '/api/press-statements'
+      fullPath: '/api/press-statements'
+      preLoaderRoute: typeof ApiPressStatementsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/register': {
@@ -595,10 +635,12 @@ const rootRouteChildren: RootRouteChildren = {
   MediaRoute: MediaRoute,
   PapersRoute: PapersRoute,
   PolicyRoute: PolicyRoute,
+  PressRoute: PressRoute,
   QuotesRoute: QuotesRoute,
   SpeechesRoute: SpeechesRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminRegisterRoute: AdminRegisterRoute,
+  ApiPressStatementsRoute: ApiPressStatementsRoute,
   PSlugRoute: PSlugRoute,
 }
 export const routeTree = rootRouteImport

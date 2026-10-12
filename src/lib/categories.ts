@@ -42,6 +42,7 @@ export const TYPE_LABELS: Record<string, string> = {
   essay: "Essay",
   policy_paper: "Policy Paper",
   speech: "Speech",
+  press_statement: "Press Statement",
   book: "Book",
   media: "Media",
 };

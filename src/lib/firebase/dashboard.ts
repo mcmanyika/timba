@@ -13,7 +13,7 @@ import type { AdminStats } from "@/lib/admin/stats";
 import { getFirebaseDb } from "@/integrations/firebase/client";
 
 const COLLECTION = "publications";
-const CONTENT_TYPES = ["essay", "policy_paper", "speech", "book", "media"] as const;
+const CONTENT_TYPES = ["essay", "policy_paper", "speech", "press_statement", "book", "media"] as const;
 
 function docToSummary(id: string, data: Record<string, unknown>): Publication {
   return {

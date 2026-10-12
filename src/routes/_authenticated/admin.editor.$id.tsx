@@ -14,7 +14,7 @@ export const Route = createFileRoute("/_authenticated/admin/editor/$id")({
   component: Editor,
 });
 
-const TYPES = ["essay", "policy_paper", "speech", "book", "media"] as const;
+const TYPES = ["essay", "policy_paper", "speech", "press_statement", "book", "media"] as const;
 
 function slugify(s: string) {
   return s
